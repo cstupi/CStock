@@ -1,0 +1,27 @@
+{
+  "name": "cstock",
+  "version": "1.0.0",
+  "description": "Stock Learning App",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "start-dev": "source dev.env; node app.js",
+    "start-prod": "source prod.env; node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.0",
+    "debug": "^2.2.0",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "morgan": "^1.7.0",
+    "serve-favicon": "^2.3.0",
+    "vue": "^2.1.6"
+  },
+  "devDependencies": {
+    "webpack": "^2.3.2"
+  }
+}
