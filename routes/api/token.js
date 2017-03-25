@@ -11,11 +11,6 @@ router.get('/', function (req, res) {
     res.send(token);
 });
 
-
-
-
-
-
 function encrypt(token, key, iv) {
 	token += "|" + new Date().toISOString().substr(0, 19);
 	var cipher = crypto.createCipheriv('aes-128-cfb8', key, iv);
