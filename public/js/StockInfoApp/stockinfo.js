@@ -1,42 +1,5 @@
 'use strict';
-var AssetInfo = {
-	props: {
-		user: {
-			defaultValue: { UserId: 0, Token: ''},
-			required: true
-		},
-		symbol: {
-			type: String,
-			default: 'MSFT'
-		}
-	}, 
-	data: function(){
-		return { asset: { Security: {} }};
-	},
-	
-	methods: {
-		GetQuote: function(symbol){
-			if(!symbol || this.user.UserId == 0 || this.user.Token == '')
-				return;
-			console.log('getting data');
-			var api = new DataAPI(this.user.UserId, this.user.Token);
-			api.GetQuote(this.symbol).then(response =>  { this.$nextTick(function () { this.asset = response; }); });
-		}
-	},
-	watch: {
-		user: function(val){
-			this.GetQuote(this.symbol);
-		},
-		symbol: function(val){
-			this.GetQuote(val);
-		}
-	},
-	mounted() {
-		console.log('mounted');
-		this.GetQuote(this.symbol);
-	},
-	template: "<div><div>{{asset.Security.Name}}</div><div>{{asset.Security.Symbol}}</div><div>{{asset.Last}}</div></div>"
-};
+
 
 var app = new Vue({
   	el: '#StockInfoApp',

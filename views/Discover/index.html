@@ -2,11 +2,22 @@
 <html>
 <head>
 	<title>Find Stocks</title>
+	<link href="/lib/chartist/chartist.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<div>Explore Stocks</div>
-	<div id="app">{{message}}</div>
+	<div id="StockInfoApp">
+	<input v-model='symbol' />
+	<asset-info v-bind:symbol="symbol" v-bind:user="user"></asset-info>
+	</div>
+	<script src="/lib/moment/moment.min.js"></script>
+	<script src="/lib/chartist/chartist.min.js"></script>
+
+	<script src="/lib/axios/axios.min.js"></script>
 	<script src="/lib/vue/vue.js"></script>
+	<script src="/js/stockinfoapp/API/UserAPI.js"></script>
+	<script src="/js/stockinfoapp/API/DataAPI.js"></script>
+	<script src="/js/stockinfoapp/AssetInfo.js"></script>
 	<script src="/js/stockinfoapp/stockinfo.js"></script>
 </body>
 </html>

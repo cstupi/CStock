@@ -8,7 +8,8 @@ var bodyParser = require('body-parser');
 
 var users = require('./routes/users');
 var tokenapi = require('./routes/api/token');
-var config = require('./CStock.config.js')
+var userapi = require('./routes/api/user');
+var config = require('./private.config.js')
 var app = express();
 
 
@@ -28,7 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', express.static(__dirname + '/views'));
 
 app.use('/users', users);
-app.use('/api/token', tokenapi)
+app.use('/api/token', tokenapi);
+app.use('/api/user', userapi);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
