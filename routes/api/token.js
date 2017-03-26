@@ -2,7 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
-var config = require('../../CStock.config');
+var config = require('../../private.config');
 
 
 
