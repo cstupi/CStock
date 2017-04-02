@@ -1,0 +1,13 @@
+CREATE TABLE `CStock`.`User` (
+  `UserId` INT NOT NULL AUTO_INCREMENT,
+  `Username` VARCHAR(256) NULL,
+  `Password` VARCHAR(512) NOT NULL,
+  `Locked` BIT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`UserId`),
+  UNIQUE INDEX `UserId_UNIQUE` (`UserId` ASC),
+  INDEX `Username` (`Username` ASC));
+
+ALTER TABLE `CStock`.`User` 
+ADD COLUMN `JoinDate` DATE NULL AFTER `Locked`,
+ADD COLUMN `ConfirmKey` VARCHAR(512) NULL AFTER `JoinDate`,
+ADD COLUMN `ConfirmDate` DATETIME NULL DEFAULT CURRENT_TIMESTAMP AFTER `ConfirmKey`;

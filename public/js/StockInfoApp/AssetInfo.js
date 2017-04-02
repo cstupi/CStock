@@ -25,36 +25,39 @@ var AssetInfo = {
 				}); 
 			});
 			
-			api.GetChartBars(this.symbol, moment('3/25/2015').format('MM/DD/YYYY h:mm:ss a'), moment('3/25/2017').format('MM/DD/YYYY h:mm:ss a')).then(response => {
+			api.GetChartBars(this.symbol, moment('3/25/2012').format('MM/DD/YYYY h:mm:ss a'), moment('3/25/2017').format('MM/DD/YYYY h:mm:ss a')).then(response => {
 				var series = [];
 				var prices = [];
 				var labels = [];
 				for(let i in response.ChartBars){
-					prices.push(response.ChartBars[i].Close);
+					prices.push( { y: response.ChartBars[i].Close, x: new Date(response.ChartBars[i].StartDate )});
 					labels.push(response.ChartBars[i].StartDate);
 				}
-				series.push(prices);
-				api.GetChartBars('SPY', moment('3/25/2015').format('MM/DD/YYYY h:mm:ss a'), moment('3/25/2017').format('MM/DD/YYYY h:mm:ss a')).then(spyResponse => {
+				series.push({ name: this.symbol, data: prices });
+				api.GetChartBars('SPY', moment('3/25/2012').format('MM/DD/YYYY h:mm:ss a'), moment('3/25/2017').format('MM/DD/YYYY h:mm:ss a')).then(spyResponse => {
 					var spyprices = [];
 					for(let i in spyResponse.ChartBars){
-						spyprices.push(spyResponse.ChartBars[i].Close);
+						spyprices.push({ y: spyResponse.ChartBars[i].Close, x: new Date(spyResponse.ChartBars[i].StartDate) });
 					}
-					series.push(spyprices);
+					series.push({ name: 'SPY', data: spyprices });
 					this.$nextTick(function(){
 					new Chartist.Line('.chart-cont', {
-							  labels: labels,
+							  // labels: labels,
 							  series: series
 							}, {
 							  fullWidth: true,
 							  showPoint: false,
 						      axisX: {
-							      labelInterpolationFnc: function(value, index) {
-							        return value; // index % 100 == 0 ? value : null;
-							      }
-							  },
-							  chartPadding: {
-							    right: 40
-							}
+							    type: Chartist.FixedScaleAxis,
+							    divisor: 5,
+							    labelInterpolationFnc: function(value) {
+							      return moment(value).format('MM/DD/YYYY');
+							    }
+							},
+							,
+							plugins: [
+								Chartist.plugins.zoom({ onZoom: onZoom })
+							]
 
 						});
 					});

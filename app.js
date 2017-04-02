@@ -5,6 +5,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var helmet = require('helmet')
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy;
+
+
 
 var users = require('./routes/users');
 var tokenapi = require('./routes/api/token');
@@ -25,6 +30,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', express.static(__dirname + '/views'));
 
