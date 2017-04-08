@@ -12,23 +12,34 @@ var connection = mysql.createConnection({
 });
 MySQL.Test = function(){
 
-	connection.connect();
 	connection.query('SELECT * FROM CStock.MarketStatus WHERE Status = ?',['PENDING'], function (error, results, fields) {
 	  if (error) throw error;
 	  console.log('The solution is: ', results[0].Status);
 	});
-	connection.end();
+	
 }
 
-MySQL.GetUser = function(username){
-		connection.connect();
-	connection.query('SELECT UserId, Username, Password, Locked, JoinDate, ConfirmKey, ConfirmDate FROM CStock.User WHERE Locked = ?',['false'], function (error, results, fields) {
-	  var user = new User(results);
-	  if (error) throw error;
-	  console.log(user);
-	  console.log('Got User: ', results[0].Username);
+MySQL.GetUser = function(username, callback){
+
+	var user;
+	connection.query('SELECT UserId, Username,Password, Locked, JoinDate, ConfirmKey, ConfirmDate FROM CStock.User WHERE Locked = ? AND username = ?',['false', username], function (error, results, fields) {
+	  user = new User(results[0].UserId, results[0].Username, results[0].Password, results[0].Locked,
+	  	results[0].JoinDate, results[0].ConfirmKey, results[0].ConfirmDate);
+
+	  callback(error, user);
+
 	});
-	connection.end();
+	
+}
+MySQL.GetUserById = function(userid, callback){
+
+	var user;
+	connection.query('SELECT UserId, Username,Password, Locked, JoinDate, ConfirmKey, ConfirmDate FROM CStock.User WHERE Locked = ? AND UserId = ?',['false', userid], function (error, results, fields) {
+	  user = new User(results[0].UserId, results[0].Username, results[0].Password, results[0].Locked,
+	  	results[0].JoinDate, results[0].ConfirmKey, results[0].ConfirmDate);
+
+	  callback(error, user);
+	});
 }
 MySQL.CreateUser = function(username, password){
 	connection.connect();
@@ -36,8 +47,8 @@ MySQL.CreateUser = function(username, password){
 	connection.query('INSERT INTO User SET ?', { Username: username, Password: password, JoinDate: new Date() }, function(error, results,fields){
 		if (error) throw error;
 		console.log("User Added: " + username);
+		connection.end();
 	});
-	connection.end();
 }
 
 module.exports = MySQL;

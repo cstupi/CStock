@@ -7,22 +7,6 @@ var bcrypt 		= require('bcrypt');
 var mysql 		= require('../../private/Database/MySQL');
 
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      	if (err) { return done(err); }
-      	if (!user) {
-        	return done(null, false, { message: 'Incorrect username.' });
-      	}
-      	if (!bcrypt.compareSync(password, hash)) {
-        	return done(null, false, { message: 'Incorrect password.' });
-  		}
-	    return done(null, user);
-    });
-  }
-));
-
-
 router.get('/', function (req, res) {
     res.status(200).send(config.XigniteUserId.toString());
 });
@@ -41,6 +25,7 @@ router.post('/register', function(req, res){
 
 router.get('/portfolio', function(req, res){
 	//var portfolio = mysql.getPortfolio();
+	console.log(req.session);
 	res.send('YOUR PORTFOLIO');
 });
 
