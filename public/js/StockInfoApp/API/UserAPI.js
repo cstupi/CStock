@@ -9,8 +9,8 @@ function UserAPI(){
 			return '';
 		});
 	};
-	API.GetUserId = function() {
-		return axios.get('/api/user').then(function(res){
+	API.GetXigniteUserId = function() {
+		return axios.get('/api/xignite').then(function(res){
 			return res.data;
 		}).catch(function(err){
 			console.log(err);

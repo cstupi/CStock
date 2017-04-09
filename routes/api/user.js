@@ -4,33 +4,35 @@ var config 		= require('../../private.config');
 var passport 	= require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt 		= require('bcrypt');
-var mysql 		= require('../../private/Database/MySQL');
+var UserData 	= require('../../private/Database/MySQL/UserData');
 
 
 router.get('/', function (req, res) {
-    res.status(200).send(config.XigniteUserId.toString());
+    res.send(req.session.passport.user);
 });
 
-router.post('/login',passport.authenticate('local', { successRedirect: '/',
-                                                    failureRedirect: '/login' }));
+router.post('/login', passport.authenticate('local'),
+  function(req, res) {
+  	res.status(200).send(true);
+});
+
+router.get('/logout', function(req, res){
+  req.logout();
+  res.status(200).send(true);
+});
 
 router.post('/register', function(req, res){
 	/* check if password means min reqs  first */
-
 	bcrypt.hash(req.body.password, 10, function(err, hash) {
-  		mysql.CreateUser(req.body.username, hash);
+  		UserData.CreateUser(req.body.username, hash);
 	});
 	res.status(200).send();
 });
 
-router.get('/portfolio', function(req, res){
-	//var portfolio = mysql.getPortfolio();
-	console.log(req.session);
-	res.send('YOUR PORTFOLIO');
-});
+
 
 router.get('/watchlist', function(req, res){
-	// var watchlist = mysql.getWatchlist();
+	// var watchlist = UserData.getWatchlist();
 	res.send('watchlist');
 });
 

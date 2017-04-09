@@ -9,11 +9,15 @@ function User(UserId, Username, Password, Locked, JoinDate, ConfirmKey, ConfirmD
     this.ConfirmDate = ConfirmDate;
     this.DataAccess = DataAccess;
 }
-User.prototype.GetUser = function(username, callback){
-	return DataAccess.GetUser(username);
+User.prototype.GetUser = function(username, callback, datasource){
+	if(!datasource)
+		return DataAccess.GetUser(username);
+	return datasource.GetUser(username);
 }
-User.prototype.Register = function(){
-	return DataAccess.CreateUser(Username, Password);
+User.prototype.Register = function(datasource){
+	if(!datasource)
+		return DataAccess.CreateUser(Username, Password);
+	return datasource.CreateUser(Username, Password);
 }
 User.prototype.GetUserById = function(userid, callback, datasource){
 	if(!datasource)

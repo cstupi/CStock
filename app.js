@@ -10,13 +10,13 @@ var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var mysql = require('./private/Database/MySQL');
 var bcrypt      = require('bcrypt');
 var User = require('./private/User/User')
+var UserData    = require('./private/Database/MySQL/UserData');
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    mysql.GetUser(username, function (err, user) {
+    UserData.GetUser(username, function (err, user) {
         if (err) { return done(err); }
         if (!user) {
             return done(null, false, { message: 'Incorrect username.' });
@@ -31,22 +31,20 @@ passport.use(new LocalStrategy(
 
 passport.serializeUser(function(user, done) {
     done(null, {userid: user.UserId,username: user.Username});
-    // if you use Model.id as your idAttribute maybe you'd want
-    // done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
   new User().GetUserById(id, function(err, user) {
     done(err, user);
-  }, mysql);
+  }, UserData);
 });
 
-
-
-var users = require('./routes/users');
 var tokenapi = require('./routes/api/token');
 var userapi = require('./routes/api/user');
+var xignite = require('./routes/api/Xignite');
+var portfolioapi = require('./routes/api/portfolio');
 var config = require('./private.config.js')
+
 var app = express();
 var options = {
       host     : config.DBHost,
@@ -84,9 +82,11 @@ app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', express.static(__dirname + '/views'));
 
-app.use('/users', users);
 app.use('/api/token', tokenapi);
 app.use('/api/user', userapi);
+app.use('/api/portfolio', portfolioapi);
+app.use('/api/xignite', xignite);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
@@ -113,10 +113,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+    res.redirect('/error');
 });
 
 

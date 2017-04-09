@@ -23,7 +23,7 @@ var app = new Vue({
 				 	self.user.Token = data;
 				});
 			});
-			users.GetUserId().then(function(data){
+			users.GetXigniteUserId().then(function(data){
 				self.$nextTick(function(){
 					self.userid = data;
 					self.user.UserId = data;
