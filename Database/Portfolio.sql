@@ -1,12 +1,12 @@
-CREATE TABLE `CStock`.`Portfolio` (
-  `PortfolioId` INT NOT NULL AUTO_INCREMENT,
-  `UserId` INT NOT NULL,
-  `Asset` VARCHAR(256) NOT NULL,
-  `Count` DOUBLE NOT NULL,
+CREATE TABLE `Portfolio` (
+  `PortfolioId` int(11) NOT NULL AUTO_INCREMENT,
+  `UserId` int(11) NOT NULL,
+  `Asset` varchar(256) NOT NULL,
+  `Count` double NOT NULL,
+  `GameId` int(11) NOT NULL,
   PRIMARY KEY (`PortfolioId`),
-  INDEX `UserId_idx` (`UserId` ASC),
-  CONSTRAINT `Port_UserId_FK`
-    FOREIGN KEY (`UserId`)
-    REFERENCES `CStock`.`User` (`UserId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  KEY `Port_Game_FK_idx` (`GameId`),
+  KEY `Port_UserId_FK_idx` (`UserId`),
+  CONSTRAINT `Port_Game_FK` FOREIGN KEY (`GameId`) REFERENCES `Game` (`GameId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `Port_UserId_FK` FOREIGN KEY (`UserId`) REFERENCES `User` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -11,8 +11,7 @@ var MySQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt      = require('bcrypt');
-var User = require('./private/User/User')
-var UserData    = require('./private/Database/MySQL/UserData');
+var UserData    = require('./private/Database/SQL/UserData');
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
@@ -34,9 +33,9 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  new User().GetUserById(id, function(err, user) {
+  UserData.GetUserById(id, function(err, user) {
     done(err, user);
-  }, UserData);
+  });
 });
 
 var tokenapi = require('./routes/api/token');

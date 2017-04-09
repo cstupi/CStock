@@ -4,7 +4,7 @@ var config 		= require('../../private.config');
 var passport 	= require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt 		= require('bcrypt');
-var UserData 	= require('../../private/Database/MySQL/UserData');
+var UserData 	= require('../../private/Database/SQL/UserData');
 
 
 router.get('/', function (req, res) {

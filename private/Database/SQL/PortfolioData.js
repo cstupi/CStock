@@ -1,8 +1,8 @@
-var connection	= require('../MySQL');
+var connection = require('../DatabaseConnection');
 
 var portfoliodata = {};
-portfoliodata.AddToPortfolio = function(userid, asset, count){
-	connection.query('INSERT INTO Portfolio (UserId, Asset,Count) VALUES (?,?,?)', [userid,asset,count], function(error,result){
+portfoliodata.AddToPortfolio = function(userid, asset, count, gameid){
+	connection.query('INSERT INTO Portfolio (UserId, Asset,Count, GameId) VALUES (?,?,?,?)', [userid,asset,count], function(error,result){
 		if(error) throw error;
 	})
 };
@@ -11,8 +11,8 @@ portfoliodata.DeleteFromPortfolio = function(portfolioId) {
 		if(error) throw error;
 	});
 };
-portfoliodata.GetPortfolio = function(userid, callback,failure){
-	connection.query('SELECT PortfolioId, Asset, Count FROM Portfolio WHERE UserId = ?', userid, function (error, results, fields){
+portfoliodata.GetPortfolio = function(userid,gameid, callback,failure){
+	connection.query('SELECT PortfolioId, Asset, Count FROM Portfolio WHERE UserId = ? AND gameid = ?', [userid gameid], function (error, results, fields){
 		if(error) {
 			if(failure)
 				failure();

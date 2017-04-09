@@ -1,5 +1,5 @@
 var User 	= require('../../User/User');
-var connection	= require('../MySQL');
+var connection = require('../DatabaseConnection');
 
 var userdata = {};
 userdata.GetUser = function(username, callback){

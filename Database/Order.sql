@@ -1,29 +1,25 @@
-CREATE TABLE `CStock`.`Order` (
-  `OrderId` INT NOT NULL AUTO_INCREMENT,
-  `TransactionType` INT NOT NULL,
-  `OrderType` INT NOT NULL,
-  `Status` INT NOT NULL,
-  `ExpirationDate` DATETIME NULL,
-  `ExecutionDate` DATE NULL,
-  `Asset` VARCHAR(255) NOT NULL,
-  `COUNT` DOUBLE NOT NULL,
-  `PRICE` DOUBLE NULL,
+CREATE TABLE `Order` (
+  `OrderId` int(11) NOT NULL AUTO_INCREMENT,
+  `TransactionType` int(11) NOT NULL,
+  `OrderType` int(11) NOT NULL,
+  `Status` int(11) NOT NULL,
+  `ExpirationDate` datetime DEFAULT NULL,
+  `ExecutionDate` date DEFAULT NULL,
+  `CreationDate` datetime NOT NULL,
+  `Asset` varchar(255) NOT NULL,
+  `COUNT` double NOT NULL,
+  `PRICE` double DEFAULT NULL,
+  `GameId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
   PRIMARY KEY (`OrderId`),
-  INDEX `Order_Status_FK_idx` (`Status` ASC),
-  INDEX `Order_TransType_FK_idx` (`TransactionType` ASC),
-  INDEX `Order_OrderType_FK_idx` (`OrderType` ASC),
-  CONSTRAINT `Order_Status_FK`
-    FOREIGN KEY (`Status`)
-    REFERENCES `CStock`.`MarketStatus` (`MarketStatusId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Order_TransType_FK`
-    FOREIGN KEY (`TransactionType`)
-    REFERENCES `CStock`.`TransactionType` (`TransactionTypeId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Order_OrderType_FK`
-    FOREIGN KEY (`OrderType`)
-    REFERENCES `CStock`.`OrderType` (`OrderTypeId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  KEY `Order_Status_FK_idx` (`Status`),
+  KEY `Order_TransType_FK_idx` (`TransactionType`),
+  KEY `Order_OrderType_FK_idx` (`OrderType`),
+  KEY `Order_GameId_FK_idx` (`GameId`),
+  KEY `Order_User_FK_idx` (`UserId`),
+  CONSTRAINT `Order_OrderType_FK` FOREIGN KEY (`OrderType`) REFERENCES `OrderType` (`OrderTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `Order_Status_FK` FOREIGN KEY (`Status`) REFERENCES `MarketStatus` (`MarketStatusId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `Order_TransType_FK` FOREIGN KEY (`TransactionType`) REFERENCES `TransactionType` (`TransactionTypeId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `Order_User_FK` FOREIGN KEY (`UserId`) REFERENCES `User` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `Order_game_FK` FOREIGN KEY (`GameId`) REFERENCES `Game` (`GameId`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
