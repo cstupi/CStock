@@ -29,6 +29,13 @@ router.post('/register', function(req, res){
 	res.status(200).send();
 });
 
+router.get('/Games/:userid', function(req, res){
+	if(req.param.userid == null || typeof(req.params.userid) !== "number")
+		res.status(400).send();
+	Game.GetGamesForUser(req.param.userid, function(results){
+		res.send(results);
+	}, error);
+});
 
 
 router.get('/watchlist', function(req, res){
