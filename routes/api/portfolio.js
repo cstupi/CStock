@@ -16,8 +16,10 @@ router.get('/', function(req, res){
 router.put('/', function(req, res){
 	if(!req.session.passport.user)
 		res.status(401).send();
+	if(!req.body.asset || !req.body.count || !req.body.gameid)
+		res.status(403).send();
 	PortfolioData.AddToPortfolio(req.session.passport.user.userid, 
-		req.body.asset, req.body.count);
+		req.body.asset, req.body.count, req.body.gameid);
 	res.send(true);
 });
 router.delete('/:portfolioId', function(req, res){
