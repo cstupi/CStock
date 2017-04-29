@@ -1,4 +1,4 @@
-var connection = require('../MySQL');
+var connection = require('../DatabaseConnection');
 
 var game = {};
 game.GetGame = function(gameid, callback, failure){

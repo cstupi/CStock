@@ -4,8 +4,7 @@ var router = express.Router();
 
 var config = require('../private.config')
 
-var mysql = require('mysql');
-
+var GameData 	= require('../../private/Market/Market');
 router.get('/:alertId/', function (req, res) {
 	//var alertExecute = alertId;
     res.send('');
