@@ -54,14 +54,15 @@ order.UpdateStatus(orderid, userid,status, ExecutionDate, callback, failure){
 }
 
 order.AddOrder = function(transactiontype, ordertype, status, expirationdate, executiondate, creationdate, asset, count, price, gameid, userid, callback, failure){
-	connection.query('INSERT INTO Order (TransactionType, OrderType, ExpirationDate, ExecutionDate, CreationDate, Asset, Count, Price, GameId, UserId) VALUES (?,?,?,?,?,?,?,?,?,?,?)',
-		[transactiontype, ordertype, status, expirationdate, executiondate, creationdate, asset, count, price, gameid, userid],function(error){
-		if(error){
-			if(failure)
-				failure();
-			throw error;
-		}
-		callback();
+	connection.query('INSERT INTO Order (TransactionType, OrderType, ExpirationDate, ExecutionDate, CreationDate, Asset, Count, Price, GameId, UserId) VALUES (?,?,?,?,?,?,?,?,?,?,?);' +
+		'SELECT LAST_INSERT_ID();',
+		[transactiontype, ordertype, status, expirationdate, executiondate, creationdate, asset, count, price, gameid, userid],function(error, results fields){
+			if(error){
+				if(failure)
+					failure();
+				throw error;
+			}
+			callback(results);
 	});
 };
 module.exports = order;

@@ -1,0 +1,1 @@
+module.exports = { Market: 1, Limit: 2, Stop: 3 }
