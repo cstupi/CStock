@@ -1,5 +1,5 @@
 'use strict';
-var config	= require('../../private.config')
+var config	= require('../../private.config');
 var mysql   = require('mysql');
 var MySQL = {};
 var connection = mysql.createConnection({

@@ -12,7 +12,7 @@ portfoliodata.DeleteFromPortfolio = function(portfolioId) {
 	});
 };
 portfoliodata.GetPortfolio = function(userid,gameid, callback,failure){
-	connection.query('SELECT PortfolioId, Asset, Count FROM Portfolio WHERE UserId = ? AND gameid = ?', [userid gameid], function (error, results, fields){
+	connection.query('SELECT PortfolioId, Asset, Count FROM Portfolio WHERE UserId = ? AND gameid = ?', [userid,gameid], function (error, results, fields){
 		if(error) {
 			if(failure)
 				failure();
