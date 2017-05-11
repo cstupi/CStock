@@ -54,7 +54,6 @@ var AssetInfo = {
 							      return moment(value).format('MM/DD/YYYY');
 							    }
 							},
-							,
 							plugins: [
 								Chartist.plugins.zoom({ onZoom: onZoom })
 							]

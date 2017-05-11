@@ -2,7 +2,7 @@
 function UserAPI(){
 	var API = {};
 	API.GetToken = function() {
-		return axios.get('/api/token').then(function(res){
+		return axios.get('/api/xignite/token').then(function(res){
 			return res.data;
 		}).catch(function(err){
 			console.log(err);
@@ -10,7 +10,7 @@ function UserAPI(){
 		});
 	};
 	API.GetXigniteUserId = function() {
-		return axios.get('/api/xignite').then(function(res){
+		return axios.get('/api/xignite/userid').then(function(res){
 			return res.data;
 		}).catch(function(err){
 			console.log(err);
