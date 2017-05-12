@@ -15,7 +15,7 @@ Vue.component('trade-info', {
 			user: { 
 				token: "",
 				userid: 0 
-			} 
+			},
 		}		
 	},
 	created () { 
@@ -48,7 +48,7 @@ Vue.component('trade-info', {
 		},
 		makeTrade() { 
 			new TradeAPI()
-			.PlaceOrder(
+			.PlaceTrade(
 				this.gameid, 
 				this.symbol, 
 				this.quantity, 
@@ -57,7 +57,6 @@ Vue.component('trade-info', {
 				this.transactionType, (result) => { 
 					console.log("Order Result: " + result)
 				});
-
 		},
 		clear() { 
 			this.symbol = "";

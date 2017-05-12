@@ -6,9 +6,9 @@ function TradeAPI(){
 		var url = "/api/market/";
 		if(orderType == 1)
 			url += "marketorder";
-		elseif(orderType == 2)
+		else if(orderType == 2)
 			url += "limitorder";
-		elseif(orderType == 3)
+		else if(orderType == 3)
 			url += "stoporder"; //not yet supported...
 
 		return axios.put(url, { gameid: gameid, symbol: symbol, count: quantity, transactiontype: transactionType }).then(function(res){
