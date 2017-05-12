@@ -2,7 +2,8 @@ var trade_page = {
 	template: '<trade-info>Buy some stuff</trade-info>'
 };
 Vue.component('trade-info', { 
-	props: ['gameid'],
+	/* Note: gameid should be a prop, passed in via route -- hardcoded now for testing */
+	//props: ['gameid'],
 	data() { 
 		return {
 			loading: false,
@@ -12,20 +13,10 @@ Vue.component('trade-info', {
 			orderType: "",
 			transactionType: "",
 			security: { Security: null },
-			user: { 
-				token: "",
-				userid: 0 
-			},
+			gameid: 16
 		}		
 	},
 	created () { 
-		this.loading = true;
-		new UserAPI().GetToken()
-			.then((token) => {
-				this.user.token = token;
-				this.user.userid = 62531;
-			});
-		this.loading = false;
 	},
 	watch: { 
 		symbol: function(val) { 
@@ -34,17 +25,12 @@ Vue.component('trade-info', {
 	},
 	methods: { 
 		getQuote(val) { 
-
 			/* TODO: pull this out into a stock component than duplicate this */
 			console.log('Getting quote for: ' + val)
-			new DataAPI(this.user.userid, this.user.token)
-				.GetQuote(this.symbol, (security) => {
-			        if (!security) {
-			          console.log("Error loading security: " + val);
-			        } else {
-			          this.security = security;
-			        }
-		      	});
+			new DataAPI(GlobalConfig.xuserid, GlobalConfig.xtoken)
+				.GetQuote(this.symbol).then(res => {
+		              this.security = res;
+		          });
 		},
 		makeTrade() { 
 			new TradeAPI()
