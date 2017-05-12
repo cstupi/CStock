@@ -33,6 +33,8 @@ Vue.component('trade-info', {
 	},
 	methods: { 
 		getQuote(val) { 
+
+			/* TODO: pull this out into a stock component than duplicate this */
 			console.log('Getting quote for: ' + val)
 			new DataAPI(this.user.userid, this.user.token)
 				.GetQuote(this.symbol, (security) => {
@@ -64,16 +66,16 @@ Vue.component('trade-info', {
 		    </div>\
 			<div class="trade pure-g"> \
 				<fieldset> \
-						<label class="pure-u-1-2">Symbol:</label> \
-						<input class="pure-u-1-2" type="text" placeholder="Symbol" v-model="symbol" /> \
-						<label class="pure-u-1-2">Quantity:</label> \
-						<input class="pure-u-1-2" type="text" placeholder="Quantity" v-model="quantity" /> \
-						<label class="pure-u-1-2">Limit Price:</label> \
-						<input class="pure-u-1-2" type="text" placeholder="Price" v-model="price" /> \
-						<label class="pure-u-1-2">Order Type:</label> \
-						<input class="pure-u-1-2" type="text" placeholder="OrderType" v-model="orderType" /> \
-						<label class="pure-u-1-2">Type:</label> \
-						<input class="pure-u-1-2" type="text" placeholder="TransactionType" v-model="transactionType" />  \
+					<label class="pure-u-1-2">Symbol:</label> \
+					<input class="pure-u-1-2" type="text" placeholder="Symbol" v-model="symbol" /> \
+					<label class="pure-u-1-2">Quantity:</label> \
+					<input class="pure-u-1-2" type="text" placeholder="Quantity" v-model="quantity" /> \
+					<label class="pure-u-1-2">Limit Price:</label> \
+					<input class="pure-u-1-2" type="text" placeholder="Price" v-model="price" /> \
+					<label class="pure-u-1-2">Order Type:</label> \
+					<input class="pure-u-1-2" type="text" placeholder="OrderType" v-model="orderType" /> \
+					<label class="pure-u-1-2">Type:</label> \
+					<input class="pure-u-1-2" type="text" placeholder="TransactionType" v-model="transactionType" />  \
 				</fieldset> \
 			</div> \
 			<button v-on:click="makeTrade()" class="pure-button pure-button-primary">Place Trade</button> \
