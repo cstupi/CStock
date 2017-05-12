@@ -21,11 +21,11 @@ Vue.component('register-form', {
 		}
 	},
   	template: '<div class="login">\
-				{{ message }} \
             	<input type="text" v-model="username" placeholder="Username" />\
-            	<input type="password" v-model="password" placeholder="Password" />\
+            	<input type="text" v-model="password" placeholder="Password" />\
                 <input type="text" placeholder="Re-Enter Password" />\
-            	<button v-on:click="login()" />\
+            	<input type="submit" value="Login" v-on:click="login()"/>\
             	<a href="">Lost your password?</a>\
+            	{{ message }}\
         	</div>'
 });

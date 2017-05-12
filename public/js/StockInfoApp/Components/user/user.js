@@ -20,11 +20,11 @@ Vue.component('login-form', {
 			});
 		}
 	},
-  	template: '<div class="login">\
-				{{ message }} \
-            	<input type="text" v-model="username" placeholder="Username" />\
-            	<input type="password" v-model="password" placeholder="Password" />\
-            	<button v-on:click="login()" />\
-            	<a href="">Lost your password?</a>\
-        	</div>'
+	template: '<div class="login">\
+				<input type="text" v-model="username" placeholder="Username" />\
+				<input type="text" v-model="password" placeholder="Password" />\
+				<input type="submit" value="Login" v-on:click="login()"/>\
+				<a href="">Lost your password?</a>\
+				{{ message }}\
+			</div>'
 });

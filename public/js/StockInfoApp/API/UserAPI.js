@@ -25,5 +25,13 @@ function UserAPI(){
 			return '';
 		});
 	}
+	API.RegisterUser = function(username, password){
+		return axios.post('/api/user/register', { username :username, password: password}).then(function(res){
+			return res.data;
+		}).catch(function(err){
+			console.log(err);
+			return '';
+		});
+	}
 	return API;
 }
