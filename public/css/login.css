@@ -1,3 +1,5 @@
+<style>
+
 body{
   margin: 0px;
   padding: 0px;
@@ -46,37 +48,6 @@ h1{
   border-radius: 0px 0px 20px 20px;
   -moz-border-radius: 0px 0px 20px 20px;
   -webkit-border-radius: 0px 0px 20px 20px;
-}
-
-.stand{
-  position: relative;  
-}
-
-.stand:before{
-  content: "";
-  position: absolute;
-  bottom: -150px;
-  border-bottom: 150px solid #bdc3c7;
-  border-left: 30px solid transparent;
-  border-right: 30px solid transparent;
-  width: 200px;
-  left: 0px;
-  right: 0px;
-  margin: auto;
-}
-
-.stand:after{
-  content: "";
-  position: absolute;
-  width: 260px;
-  left: 0px;
-  right: 0px;
-  margin: auto;
-  border-bottom: 30px solid #bdc3c7;
-  border-left: 30px solid transparent;
-  border-right: 30px solid transparent;
-  bottom: -180px;
-  box-shadow: 0px 4px 0px #7e7e7e
 }
 
 .inner-screen{
@@ -181,3 +152,5 @@ a:hover{
 :-ms-input-placeholder {  
    color: gray;  
 }
+
+</style>
