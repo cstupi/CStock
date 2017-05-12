@@ -28,7 +28,8 @@
     "passport-local": "^1.0.0",
     "purecss": "^0.6.2",
     "serve-favicon": "^2.3.0",
-    "vue": "^2.1.6"
+    "vue": "^2.1.6",
+    "vue-router": "^2.5.3"
   },
   "devDependencies": {
     "webpack": "^2.3.2"
