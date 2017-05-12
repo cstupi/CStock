@@ -8,11 +8,14 @@ function DataAPI(userid, token){
 	API.Token = token;
 	API.TokenParam = "&_token=" + API.Token + "&_token_userid=" + API.UserId;
 
-	API.GetQuote = function(symbol) {
+	API.GetQuote = function(symbol, callback, failure) {
 		return axios.get( API.baseRealTimeQuoteUrl + symbol + API.TokenParam).then(function(res){
-			return res.data;
+			callback(res.data);
 		}).catch(function(err){
-			console.log(err);
+			if(failure)
+				failure(error);
+			else
+				console.log(err);
 			return '';
 		});
 	};
