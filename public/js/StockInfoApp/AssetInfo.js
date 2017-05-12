@@ -53,11 +53,7 @@ var AssetInfo = {
 							    labelInterpolationFnc: function(value) {
 							      return moment(value).format('MM/DD/YYYY');
 							    }
-							},
-							plugins: [
-								Chartist.plugins.zoom({ onZoom: onZoom })
-							]
-
+							}
 						});
 					});
 				});
