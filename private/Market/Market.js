@@ -7,6 +7,7 @@ var order		= require('../Database/SQL/OrderData');
 var transaction = require('../Database/SQL/TransactionData');
 var portfolio	= require('../Database/SQL/PortfolioData');
 market = {};
+var starting_cash = 100000;
 
 market.PlaceLimitOrder = function(userid, gameid, symbol, transactionType,count, valueBooleanString, expiration, callbackEndpoint, callback, failure){
 	order.AddOrder(transactionType, ordertypes["LIMIT"], status["PENDING"], expiration, null, new Date(), symbol, count, null, gameid, userid, function(orderid){
@@ -42,18 +43,31 @@ function ExecuteOrder(o, price, cashOnHand, bankId){
 	transaction.AddTransaction(o["UserId"], transactiontype[o["TransactionType"]],o["Count"],price, new Date(), status["COMPLETE"],o["OrderId"], o["GameId"], function(){
 		order.UpdateStatus(o["OrderId"], o["UserId"],status["COMPLETE"], new Date(),  function(){
 			portfolio.GetAssetFromPortfolio(o["UserId"], o["GameId"], o["Asset"],function(result){
+				var port = result[0];
 				var count = parseInt(o["Count"]);
-				var costbasis = price * count;
-				
-				portfolio.UpdatePortfolio(o["UserId"], bankId, cashOnHand-costbasis, result[0]["CostBasis"],function(){},function(error){
+				var costBasis = price * count;
+				var newCostBasis = 0;
+				var newCount = 0;
+				var newCash = cashOnHand;
+				var startingCash = starting_cash; // hard coded up top for now
+				if(transactiontype[o["TransactionType"]] == transactiontype["BUY"] || transactiontype[o["TransactionType"]] == transactiontype["BUYCOVER"]){
+					newCount = result.length > 0 ? parseInt(port["Count"]) + count : count;
+					newCostBasis = result.length > 0 ? parseInt(port["CostBasis"]) + costbasis : costBasis;
+					newCash = cashOnHand - costBasis;
+				}else if(transactiontype[o["TransactionType"]] == transactiontype["SELL"] || transactiontype[o["TransactionType"]] == transactiontype["SELLSHORT"]) {
+					newCount = parseInt(port["Count"]) - count;
+					newCostBasis = parseInt(port["CostBasis"]) - costBasis;
+					newCash = cashOnHand + costBasis;
+				}
+				portfolio.UpdatePortfolio(o["UserId"], bankId, newCash, startingCash,function(){},function(error){
 					console.log("Error Updating cash after execution");
 				});
 				if(result.length > 0){
-					portfolio.UpdatePortfolio(o["UserId"], result[0]["PortfolioId"], parseInt(result[0]["Count"]) + count, parseInt(result[0]["CostBasis"]) + costbasis,function(){},function(error){
+					portfolio.UpdatePortfolio(o["UserId"], port["PortfolioId"], newCount, newCostBasis,function(){},function(error){
 						console.log("Error updating portfolio asset");
 					});
 				} else {
-					portfolio.AddToPortfolio(o["UserId"], o["Asset"], o["Count"], o["GameId"], costbasis,function(){ response.status(200).send(); },function(error){
+					portfolio.AddToPortfolio(o["UserId"], o["Asset"], o["Count"], o["GameId"], newCostBasis,function(){ },function(error){
 						console.log("Error adding portfolio asset");
 					});
 				}
@@ -68,18 +82,33 @@ function ExecuteOrder(o, price, cashOnHand, bankId){
 	});
 
 }
+
 function CheckAndExecuteOrder(o, price){
-	portfolio.GetAssetFromPortfolio(o["UserId"], o["gameid"], "USD", function(result){
-		if(parseInt(result[0].Count) > (price * parseInt(o["Count"]))){
-			ExecuteOrder(o, price, parseInt(result[0].Count), result[0].PortfolioId);
-		} else {
-			order.UpdateStatus(o["OrderId"], o["UserId"],status["INVALID"], new Date(),  function(){}, function(error){
-				console.log("Error updating order status: " + error);
-			});
-		}
-	}, function(error){
-		console.log("Error updating order status: " + error);
-	});
+	if(transactiontype[o["TransactionType"]] == transactiontype["BUY"] || transactiontype[o["TransactionType"]] == transactiontype["BUYCOVER"]){
+		portfolio.GetAssetFromPortfolio(o["UserId"], o["GameId"], "USD", function(result){
+			if(parseInt(result[0].Count) > (price * parseInt(o["Count"]))){
+				ExecuteOrder(o, price, parseInt(result[0].Count), result[0].PortfolioId);
+			} else {
+				order.UpdateStatus(o["OrderId"], o["UserId"],status["INVALID"], new Date(),  function(){}, function(error){
+					console.log("Error updating order status: " + error);
+				});
+			}
+		}, function(error){
+			console.log("Error updating order status: " + error);
+		});
+	} else if(transactiontype[o["TransactionType"]] == transactiontype["SELL"] || transactiontype[o["TransactionType"]] == transactiontype["SELLSHORT"]) {
+		portfolio.GetAssetFromPortfolio(o["UserId"], o["GameId"], o["Asset"], function(result){
+			if(parseInt(result[0].Count) > parseInt(o["Count"])){
+				ExecuteOrder(o, price, parseInt(result[0].Count), result[0].PortfolioId);
+			} else {
+				order.UpdateStatus(o["OrderId"], o["UserId"],status["INVALID"], new Date(),  function(){}, function(error){
+					console.log("Error updating order status: " + error);
+				});
+			}
+		}, function(error){
+			console.log("Error updating order status: " + error);
+		});
+	}
 }
 function RunMarket(orders){
 	for(let i in orders){
