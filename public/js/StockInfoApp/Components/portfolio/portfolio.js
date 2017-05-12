@@ -9,7 +9,7 @@ var template = '<div class="post">\
 \
     <div v-if="post" class="content">\
       <h2></h2>\
-      <p>{{ post }}</p>\
+      <div v-for="port in post">{{ port.Asset }} {{ port.Count }} {{ port.CostBasis }} {{ port.Current }} {{ port.Return }}</div>\
     </div>\
   </div>';
 
@@ -38,8 +38,17 @@ Vue.component('portfolio-list', {
       this.error = this.post = null;
       this.loading = true;
       // replace getPost with your data fetching util / API wrapper
-      var portfolio = new PortfolioAPI().Get().then((portfolio) => {
-      	this.post = portfolio;
+      var portfolio = new PortfolioAPI().Get().then((p) => {
+        let symbols = [];
+        for(let port in p){
+          new DataAPI(GlobalConfig.xuserid, GlobalConfig.xtoken).GetQuote(port.Asset).then(res => {
+              port.Current = res.Last;
+              port.Return = (post.CostBasis) / (port.Count * res.Last);
+          });
+        }
+
+      	this.post = p;
+        this.loading = false;
       });
 
     }

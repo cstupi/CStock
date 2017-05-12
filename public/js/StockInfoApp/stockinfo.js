@@ -1,6 +1,9 @@
 'use strict';
 
-
+var GlobalConfig = {
+	xuserid: null,
+	xtoken: null
+};
 
 const routes = [
   { path: '/Portfolio', component: portfolio_page },
