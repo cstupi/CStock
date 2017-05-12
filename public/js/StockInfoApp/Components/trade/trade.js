@@ -2,14 +2,15 @@ var trade_page = {
 	template: '<trade-info>Buy some stuff</trade-info>'
 };
 Vue.component('trade-info', { 
+	props: ['gameid'],
 	data() { 
 		return {
 			loading: false,
 			symbol: "",
 			quantity: 0,
 			price: 0.0,
-			orderType: null,
-			transactionType: null,
+			orderType: "",
+			transactionType: "",
 			security: { Security: null },
 			user: { 
 				token: "",
@@ -46,7 +47,17 @@ Vue.component('trade-info', {
 		      	});
 		},
 		makeTrade() { 
-			return;
+			new TradeAPI()
+			.PlaceOrder(
+				this.gameid, 
+				this.symbol, 
+				this.quantity, 
+				this.price, 
+				this.orderType, 
+				this.transactionType, (result) => { 
+					console.log("Order Result: " + result)
+				});
+
 		},
 		clear() { 
 			this.symbol = "";
@@ -73,9 +84,21 @@ Vue.component('trade-info', {
 					<label class="pure-u-1-2">Limit Price:</label> \
 					<input class="pure-u-1-2" type="text" placeholder="Price" v-model="price" /> \
 					<label class="pure-u-1-2">Order Type:</label> \
-					<input class="pure-u-1-2" type="text" placeholder="OrderType" v-model="orderType" /> \
+					<select class="pure-u-1-2" v-model="orderType"> \
+						<option disabled value="">Choose</option> \
+						<option value="1">Market</option> \
+						<option value="2">Limit</option> \
+						<option value="3">Stop</option> \
+					</select> \
 					<label class="pure-u-1-2">Type:</label> \
-					<input class="pure-u-1-2" type="text" placeholder="TransactionType" v-model="transactionType" />  \
+					<select class="pure-u-1-2" v-model="transactionType"> \
+						<option disabled value="" selected>Choose</option> \
+						<option value="1">Buy</option> \
+						<option value="2">Sell</option> \
+						<option value="3">Buy Cover</option> \
+						<option value="4">Sell Short</option> \
+						<option value="5">Div</option> \
+					</select> \
 				</fieldset> \
 			</div> \
 			<button v-on:click="makeTrade()" class="pure-button pure-button-primary">Place Trade</button> \
