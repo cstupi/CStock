@@ -1,7 +1,18 @@
 var connection = require('../DatabaseConnection');
 
 var order = {};
-
+order.GetAllPendingMarketOrders = function(callback, failure){
+	connection.query('SELECT o.OrderId, t.TransactionType, ot.OrderType, m.Status, o.ExpirationDate, o.ExecutionDate, o.CreationDate, o.Asset, o.Count, o.Price, o.GameId' +
+		' FROM Order o tran JOIN TransactionType t ON o.TransactionType = t.TransactionTypeId' +
+		' JOIN OrderType ot ON ot.OrderTypeId = o.OrderType WHERE m.StatusId = ? AND ot.OrderType = ?',[1,1],function(error, results fields){
+			if(error){
+				if(failure)
+					failure();
+				throw error;
+			}
+			callback(results);
+	});
+}
 order.GetAllOrdersForGame = function(gameid, callback, failure){
 	connection.query('SELECT o.OrderId, t.TransactionType, ot.OrderType, m.Status, o.ExpirationDate, o.ExecutionDate, o.CreationDate, o.Asset, o.Count, o.Price, o.GameId' +
 		' FROM Order o tran JOIN TransactionType t ON o.TransactionType = t.TransactionTypeId' +
