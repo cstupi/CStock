@@ -39,11 +39,11 @@ Vue.component('portfolio-list', {
       this.loading = true;
       // replace getPost with your data fetching util / API wrapper
       var portfolio = new PortfolioAPI().Get().then((p) => {
-        let symbols = [];
-        for(let port in p){
-          new DataAPI(GlobalConfig.xuserid, GlobalConfig.xtoken).GetQuote(port.Asset).then(res => {
-              port.Current = res.Last;
-              port.Return = (post.CostBasis) / (port.Count * res.Last);
+        for(var port in p){
+          new DataAPI(GlobalConfig.xuserid, GlobalConfig.xtoken).GetQuote(p[port].Asset).then(res => {
+              p[port].Current = res.Last;
+              p[port].Return = (p[port].CostBasis) / (p[port].Count * res.Last);
+              this.error = "TESTING";
           });
         }
 
