@@ -1,6 +1,6 @@
-var login = { template: '<login-form></login-form>'} 
+var register = { template: '<register-form></register-form>'} 
 
-Vue.component('login-form', {
+Vue.component('register-form', {
 	data(){ return {
 		username: null,
 		password: null,
@@ -24,6 +24,7 @@ Vue.component('login-form', {
 				{{ message }} \
             	<input type="text" v-model="username" placeholder="Username" />\
             	<input type="password" v-model="password" placeholder="Password" />\
+                <input type="text" placeholder="Re-Enter Password" />\
             	<button v-on:click="login()" />\
             	<a href="">Lost your password?</a>\
         	</div>'
