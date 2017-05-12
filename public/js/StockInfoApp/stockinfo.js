@@ -4,8 +4,8 @@
 
 const routes = [
   { path: '/Portfolio', component: portfolio_page },
-  { path: '/Trade', component: trade_page, props: { gameId: 1} }
-  { path: '/login_user', component: login_user}
+  { path: '/Trade', component: trade_page, props: { gameId: 1} },
+  { path: '/login', component: login}
 ]
 
 const router = new VueRouter({

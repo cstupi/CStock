@@ -17,5 +17,13 @@ function UserAPI(){
 			return '';
 		});
 	};
+	API.LoginUser = function(username, password){
+		return axios.post('/api/user/login', { username :username, password: password}).then(function(res){
+			return res.data;
+		}).catch(function(err){
+			console.log(err);
+			return '';
+		});
+	}
 	return API;
 }
