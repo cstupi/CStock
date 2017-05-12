@@ -1,6 +1,15 @@
 'use strict';
 
 
+const routes = [
+  { path: '/AssetInfo', component: AssetInfo },
+  { path: '/Portfolio', compenent: portfolio-page }
+ // { path: '/bar', component: Bar }
+]
+const router = new VueRouter({
+  routes // short for routes: routes
+});
+
 var app = new Vue({
   	el: '#StockInfoApp',
   	data: {
@@ -33,8 +42,10 @@ var app = new Vue({
 		}
 	},
   	components: {
+  		'portfolio-page': portfolio-page,
   		'asset-info': AssetInfo
-  	}	
+  	},
+  	router: router	
 });
 function User(userid, token){
 	this.UserId = userid;
