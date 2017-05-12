@@ -2,46 +2,65 @@
 var express = require('express');
 var router = express.Router();
 
-var ordertypes		= require('OrderType');
-var transactiontypes = require('TransactionType');
-var status 			= require('Status');
+var ordertypes		= require('../../private/Market/OrderType');
+var transactiontypes = require('../../private/Market/TransactionType');
+var status 			= require('../../private/Market/Status');
 
 var market 			= require('../../private/Market/Market')
 var order 			= require('../../private/Database/SQL/OrderData');
-var transaction 	= require('../../private/Database/SQL/TransactionData');
+
 
 function error(error){
 	console.log(error);
 	res.status(500).send();
 }
 
-router.get('/quote/:symbol', function (req, res) {
-	if(!req.session.passport.user)
-		res.status(401).send();
-	if(req.params.symbol == null)
-		res.status(400).send();
-	market.GetMarketQuote(req.params.symbol, function(data){
-		console.log(data);
-		res.send(data);
-	},error);
-});
+
 router.put('/marketorder', function (req, res) {
+
 	if(!req.session.passport.user)
 		res.status(401).send();
-	if(!req.body.symbol || !req.body.count || !req.body.gameid || !req.body.transactiontype || !req.body.gameid || !req.body)
+	if(!req.body.symbol || !req.body.count || !req.body.gameid || !req.body.transactiontype)
 		res.status(403).send();
-	order.AddOrder(req.body.transactiontype, ordertypes["Market"], status["Pending"], null, null, new Date(), req.params.symbol,
-		req.body.count, null, req.body.gameid, req.session.passport.user.userid, function(orderid){
-			market.GetMarketQuote(req.params.symbol, function(data){
-				console.log(data);
-				res.send(data);
-				data[0].Last;
-				data[0].LastSize
-				transaction.AddTransaction(req.session.passport.user.userid, req.body.transactiontype, asset,count,data[0].Last,new Date(), 
-					status, orderid, req.body.gameid, callback, error);
-		},error);
-	}, error);
+	market.PlaceMarketOrder(req.session.passport.user.userid, req.body.gameid,  req.body.symbol, req.body.transactiontype, req.body.count,function(){
+			res.status(200).send();
+		}, function(error){
+			console.log(error);
+			res.status(500).send();
+		});
+});
+router.post('/cancelorder/:orderid', function(req, res){
+	if(!req.session.passport.user)
+		res.status(401).send();
+	if(!req.params.orderid)
+		res.status(403).send();
+	order.UpdateStatus(req.params.orderid, req.session.passport.user.userid,status["Canceled"], new Date(), function(){
+		res.status(200).send();
+	}, function(error){
+			console.log(error);
+			res.status(500).send();
+		});
+});
+router.put('/limitorder', function(req, res){
+	if(!req.session.passport.user)
+		res.status(401).send();
+	if(!req.body.symbol || !req.body.count || !req.body.gameid || !req.body.transactiontype || !req.body.gameid || typeof(req.body.price) != number)
+		res.status(403).send();
 	
+	transType = req.body.transactiontype;
+	valueBoolString = transType == "Buy" || transType == "BuyCover" || transType == 1 || transType == 3? "Last<=" + price : "Last>=" + price;
+	console.log(req.baseUrl);
+	market.PlaceLimitOrder(req.session.passport.user.userid, req.body.gameid, req.body.symbol, transType, 
+		req.body.count, valueBoolString, req.body.expiration, req.baseUrl + "/AlertCallback/{AlertIdentifier}/{timestamp}", function(){
+			res.status(200).send();
+	}, function(error){
+			console.log(error);
+			res.status(500).send();
+		});
+});
+router.get('/AlertCallback/:alertid/:timestamp', function(req,res){
+	market.ExecuteLimitOrder(req.params.alertid, req.params.timestamp);
+	res.status(200).send();
 });
 
 module.exports = router;

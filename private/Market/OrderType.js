@@ -1,1 +1,1 @@
-module.exports = { Market: 1, Limit: 2, Stop: 3 }
+module.exports = { MARKET: 1, LIMIT: 2, STOP: 3,1: "MARKET", 2: "LIMIT", 3: "STOP" };

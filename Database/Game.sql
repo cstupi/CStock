@@ -4,7 +4,7 @@ CREATE TABLE `Game` (
   `GamePassword` varchar(256) DEFAULT NULL,
   `CreatedBy` int(11) NOT NULL,
   `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `StartDate` datetime NOT NULL,
+  `StartDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `EndDate` datetime DEFAULT NULL,
   PRIMARY KEY (`GameId`),
   UNIQUE KEY `GameName_UNIQUE` (`GameName`),

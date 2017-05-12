@@ -17,18 +17,27 @@ game.GetGameByName = function(GameName, callback, failure){
 		if(error){
 			if(failure)
 				failure();
-			throw error;
+			else 
+				throw error;
 		}
 		if(callback)
 			callback(results);
 	});
 }
 game.CreateGame = function(GameName, GamePassword, CreatedBy,StartDate,EndDate, callback, failure){
-	connection.query('INSERT INTO Game (GameName, GamePassword, CreatedBy,StartDate,EndDate) VALUES (?,?,?,?,?)', [GameName, GamePassword, CreatedBy, StartDate, EndDate],function(error){
+	if(!StartDate){
+		var query = 'INSERT INTO CStock.Game (GameName, GamePassword, CreatedBy,EndDate) VALUES (?,?,?,?)';
+		var vals = [GameName, GamePassword, CreatedBy, EndDate];
+	} else {
+		var query = 'INSERT INTO CStock.Game (GameName, GamePassword, CreatedBy,StartDate,EndDate) VALUES (?,?,?,?,?)';
+		var vals = [GameName, GamePassword, CreatedBy, StartDate, EndDate];
+	}
+	connection.query(query, vals,function(error){
 		if(error){
 			if(failure)
 				failure();
-			throw error;
+			else 
+				throw error;
 		}
 		if(callback)
 			callback();
@@ -36,11 +45,12 @@ game.CreateGame = function(GameName, GamePassword, CreatedBy,StartDate,EndDate, 
 }
 
 game.GetAllGames = function(callback,failure){
-	connection.query('SELECT GameId, GameName, CreatedBy, CreateDate,StartDate,EndDate FROM Game',function(error, results fields){
+	connection.query('SELECT GameId, GameName, CreatedBy, CreateDate,StartDate,EndDate FROM Game',function(error, results, fields){
 		if(error){
 			if(failure)
 				failure();
-			throw error;
+			else 
+				throw error;
 		}
 		callback(results);
 	});
@@ -50,7 +60,8 @@ game.GetMembersForGame = function(gameid, callback, failure){
 		if(error){
 			if(failure)
 				failure();
-			throw error;
+			else 
+				throw error;
 		}
 		callback(results);
 	});
@@ -61,7 +72,8 @@ game.GetGamesForUser = function(userid, callback, failure){
 		if(error){
 			if(failure)
 				failure();
-			throw error;
+			else 
+				throw error;
 		}
 		callback(results);
 	});
@@ -71,7 +83,8 @@ game.AddUser = function(userid, gameid, joindate, callback,failure){
 		if(error){
 			if(failure)
 				failure();
-			throw error;
+			else 
+				throw error;
 		}
 		if(callback)
 			callback();
@@ -82,7 +95,8 @@ game.DeleteUser = function(userid, gameid,callback,failure){
 		if(error){
 			if(failure)
 				failure();
-			throw error;
+			else 
+				throw error;
 		}
 		if(callback)
 			callback();

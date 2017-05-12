@@ -1,1 +1,1 @@
-module.exports = { Buy: 1, Sell: 2, BuyCover: 3, SellShort: 4, Dividend: 5 }
+module.exports = { BUY: 1, SELL: 2, BUYCOVER: 3, SELLSHORT: 4, DIV: 5 };

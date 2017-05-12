@@ -1,5 +1,6 @@
-var https = require('https');
-var config = require('../../private.config.js');
+var https 		= require('https');
+var config 		= require('../../private.config.js');
+
 
 var token = "&_token=" + config.Token;
 
@@ -15,12 +16,17 @@ var Xignite = {};
 Xignite.GetMarketQuote = function(symbol, callback, failure){
 	var path = marketQuotePath + symbol + token;
 	https.get(marketQuoteHost + path, (res) => {
-		if(res.statusCode === 200)
+		var message = '';
+		if(res.statusCode === 200){
 			res.on('data',(data) => {
-				callback(data);
+				message += data;
 			});
-		else
+			res.on('end',function(){
+				callback(JSON.parse(message));
+			});
+		} else {
 			failure();
+		}
 	});
 }
 Xignite.PlaceLimitOrder = function(symbol, valueBooleanString, expiration, callbackEndpoint, callback, failure){

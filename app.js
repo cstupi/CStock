@@ -1,17 +1,19 @@
 'use strict';
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
+var express     = require('express');
+var path        = require('path');
+var favicon     = require('serve-favicon');
+var logger      = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var helmet = require('helmet');
-var session = require('express-session');
-var MySQLStore = require('express-mysql-session')(session);
-var passport = require('passport');
+var bodyParser  = require('body-parser');
+var helmet      = require('helmet');
+var session     = require('express-session');
+var MySQLStore  = require('express-mysql-session')(session);
+var passport    = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt      = require('bcrypt');
 var UserData    = require('./private/Database/SQL/UserData');
+
+var Market      =  require('./private/Market/Market');
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
@@ -38,10 +40,7 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-var tokenapi = require('./routes/api/token');
-var userapi = require('./routes/api/user');
-var xignite = require('./routes/api/Xignite');
-var portfolioapi = require('./routes/api/portfolio');
+
 var config = require('./private.config.js')
 
 var app = express();
@@ -81,10 +80,15 @@ app.use(helmet());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', express.static(__dirname + '/views'));
 
-app.use('/api/token', tokenapi);
-app.use('/api/user', userapi);
-app.use('/api/portfolio', portfolioapi);
-app.use('/api/xignite', xignite);
+
+app.use('/api/user', require('./routes/api/user'));
+app.use('/api/portfolio', require('./routes/api/portfolio'));
+app.use('/api/xignite', require('./routes/api/xignite'));
+app.use('/api/orders', require('./routes/api/orders'));
+app.use('/api/transactions',require('./routes/api/transactions'));
+app.use('/api/game',require('./routes/api/game'));
+app.use('/api/market', require('./routes/api/market'));
+app.use('/api/watchlist', require('./routes/api/watchlist'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -117,6 +121,7 @@ app.use(function (err, req, res, next) {
 
 
 module.exports = app;
+Market.Start();
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
-})
+});

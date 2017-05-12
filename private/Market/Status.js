@@ -1,7 +1,7 @@
 
 module.exports = {
-Pending:1
-Canceled:2
-Complete:3
-Invalid:4
+	PENDING:1,
+	CANCELED:2,
+	COMPLETE:3,
+	INVALID:4
 }

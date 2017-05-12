@@ -4,9 +4,10 @@ CREATE TABLE `Portfolio` (
   `Asset` varchar(256) NOT NULL,
   `Count` double NOT NULL,
   `GameId` int(11) NOT NULL,
+  `CostBasis` varchar(45) NOT NULL,
   PRIMARY KEY (`PortfolioId`),
   KEY `Port_Game_FK_idx` (`GameId`),
   KEY `Port_UserId_FK_idx` (`UserId`),
   CONSTRAINT `Port_Game_FK` FOREIGN KEY (`GameId`) REFERENCES `Game` (`GameId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Port_UserId_FK` FOREIGN KEY (`UserId`) REFERENCES `User` (`UserId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
