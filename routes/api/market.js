@@ -18,10 +18,14 @@ function error(error){
 
 router.put('/marketorder', function (req, res) {
 
-	if(!req.session.passport.user)
+	if(!req.session.passport.user){
 		res.status(401).send();
-	if(!req.body.symbol || !req.body.count || !req.body.gameid || !req.body.transactiontype)
+		return;
+	}
+	if(!req.body.symbol || !req.body.count || !req.body.gameid || !req.body.transactiontype){
 		res.status(403).send();
+		return;
+	}
 	market.PlaceMarketOrder(req.session.passport.user.userid, req.body.gameid,  req.body.symbol, req.body.transactiontype, req.body.count,function(){
 			res.status(200).send();
 		}, function(error){
@@ -30,10 +34,14 @@ router.put('/marketorder', function (req, res) {
 		});
 });
 router.post('/cancelorder/:orderid', function(req, res){
-	if(!req.session.passport.user)
+	if(!req.session.passport.user){
 		res.status(401).send();
-	if(!req.params.orderid)
+		return;
+	}
+	if(!req.params.orderid){
 		res.status(403).send();
+		return;
+	}
 	order.UpdateStatus(req.params.orderid, req.session.passport.user.userid,status["Canceled"], new Date(), function(){
 		res.status(200).send();
 	}, function(error){
@@ -42,10 +50,14 @@ router.post('/cancelorder/:orderid', function(req, res){
 		});
 });
 router.put('/limitorder', function(req, res){
-	if(!req.session.passport.user)
+	if(!req.session.passport.user){
 		res.status(401).send();
-	if(!req.body.symbol || !req.body.count || !req.body.gameid || !req.body.transactiontype || !req.body.gameid || typeof(req.body.price) != number)
+		return;
+	}
+	if(!req.body.symbol || !req.body.count || !req.body.gameid || !req.body.transactiontype || !req.body.gameid || typeof(req.body.price) != number){
 		res.status(403).send();
+		return;
+	}
 	
 	transType = req.body.transactiontype;
 	valueBoolString = transType == "Buy" || transType == "BuyCover" || transType == 1 || transType == 3? "Last<=" + price : "Last>=" + price;

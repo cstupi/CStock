@@ -30,8 +30,10 @@ router.post('/register', function(req, res){
 });
 
 router.get('/Games/:userid', function(req, res){
-	if(req.params.userid == null || typeof(req.params.userid) !== "number")
-		res.status(400).send();
+	if(req.params.userid == null || typeof(req.params.userid) !== "number"){
+		res.status(403).send();
+		return;
+	}
 	Game.GetGamesForUser(req.param.userid, function(results){
 		res.send(results);
 	}, error);

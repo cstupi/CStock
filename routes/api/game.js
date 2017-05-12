@@ -10,13 +10,15 @@ var portfolio = require('../../private/Database/SQL/PortfolioData');
 var starting_cash = 100000;
 
 router.get('/Members/:gameid/', function (req, res) {
-	if(req.params.gameid == null || typeof(req.params.gameid) !== "number")
+	if(req.params.gameid == null || typeof(req.params.gameid) !== "number"){
 		res.status(400).send();
+		return;
+	}
 	Game.GetMembersForGame(gameid, function(results){
 		res.send(results);
 	}, function(error){
-	console.log(error);
-	res.status(500).send();
+		console.log(error);
+		res.status(500).send();
 });
 });
 
@@ -30,8 +32,10 @@ router.post('/Create', function(req,res){
 	var response = res;
 	if(req.body.gamename == null){
 		res.status(403).send();
+		return;
 	} else if(req.session.passport.user == null){
 		res.status(401).send();
+		return;
 	}
 	Game.CreateGame(req.body.gamename, req.body.gamepassword, req.session.passport.user.userid,req.body.startdate,req.body.enddate,function(){
 		Game.GetGameByName(req.body.gamename, function(result){
@@ -54,9 +58,12 @@ router.put('/Join/:gameid',function(req, res){
 	Game.GetGame(gameid, function(game){
 		if(!req.session.passport.user){
 			res.status(401).send();
+			return;
 		}
-		if(game.length !== 1)
+		if(game.length !== 1){
 			res.status(403).send();
+			return;
+		}
 		// check password and end date
 		if((game[0].EndDate == null || game[0].EndDate > new Date()) &&
 		 (game[0].GamePassword == null || game[0].GamePassword == req.body.gamepassword)){
@@ -68,6 +75,7 @@ router.put('/Join/:gameid',function(req, res){
 			}, error);
 		} else {
 			res.status(401).send();
+			return;
 		}
 	},function(error){
 	console.log(error);

@@ -9,8 +9,10 @@ function error(error){
 }
 
 router.get('/user/all',function(req,res){
-	if(!req.session.passport.user)
+	if(!req.session.passport.user){
 		res.status(401).send();
+		return;
+	}
 	order.GetAllOrdersForUser(req.session.passport.user.userid, function(results){
 		res.send(results);
 	}, function(error){
@@ -20,10 +22,14 @@ router.get('/user/all',function(req,res){
 });
 
 router.get('/game/:gameid',function(req,res){
-	if(!req.session.passport.user)
+	if(!req.session.passport.user){
 		res.status(401).send();
-	if(typeof(req.params.gameid) != "number")
+		return;
+	}
+	if(typeof(req.params.gameid) != "number"){
 		res.status(403).send();
+		return;
+	}
 	order.GetAllOrdersForGame(req.params.gameid, function(results){
 		res.send(results);
 	}, function(error){
@@ -32,10 +38,14 @@ router.get('/game/:gameid',function(req,res){
 });
 });
 router.get('/user/:gameid',function(req,res){
-	if(!req.session.passport.user)
+	if(!req.session.passport.user){
 		res.status(401).send();
-	if(typeof(req.params.gameid) != "number")
+		return;
+	}
+	if(typeof(req.params.gameid) != "number"){
 		res.status(403).send();
+		return;
+	}
 	order.GetAllOrdersForUserGame(req.session.passport.user.userid, req.params.gameid, function(results){
 		res.send(results);
 	}, function(error){

@@ -8,8 +8,8 @@ var template = '<div class="post">\
     </div>\
 \
     <div v-if="post" class="content">\
-      <h2>{{ post.Security.Name }}</h2>\
-      <p>{{ post.Last }}</p>\
+      <h2></h2>\
+      <p>{{ post }}</p>\
     </div>\
   </div>';
 
@@ -38,16 +38,8 @@ Vue.component('portfolio-list', {
       this.error = this.post = null;
       this.loading = true;
       // replace getPost with your data fetching util / API wrapper
-      var userapi = new UserAPI().GetToken().then((token) => {
-	      var api = new DataAPI(62531, token);
-	      api.GetQuote("MSFT", (post) => {
-	        this.loading = false
-	        if (!post) {
-	          this.error = "error";
-	        } else {
-	          this.post = post;
-	        }
-	      });
+      var userapi = new PortfolioAPI().Get().then((portfolio) => {
+      	this.post = portfolio;
       });
 
     }
