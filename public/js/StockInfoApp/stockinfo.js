@@ -8,7 +8,8 @@ var GlobalConfig = {
 const routes = [
   { path: '/Portfolio', component: portfolio_page },
   { path: '/Trade', component: trade_page, props: { gameId: 1} },
-  { path: '/login', component: login}
+  { path: '/login', component: login },
+  { path: '/games', component: game_page}
 ]
 
 const router = new VueRouter({

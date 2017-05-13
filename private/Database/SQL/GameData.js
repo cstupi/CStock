@@ -68,7 +68,7 @@ game.GetMembersForGame = function(gameid, callback, failure){
 }
 
 game.GetGamesForUser = function(userid, callback, failure){
-	connection.query('SELECT gameid, JoinDate FROM GameMember WHERE userid = ?', userid, function(error,results,fields){
+	connection.query('SELECT g.GameId, g.GameName, g.CreatedBy, g.CreateDate,g.StartDate,g.EndDate FROM GameMember gm JOIN Game g ON  g.gameid = gm.gameid WHERE userid = ?', userid, function(error,results,fields){
 		if(error){
 			if(failure)
 				failure();

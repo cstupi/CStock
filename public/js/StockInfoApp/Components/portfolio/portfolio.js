@@ -1,18 +1,3 @@
-var template = '<div class="post">\
-    <div class="loading" v-if="loading">\
-      Loading...\
-    </div>\
-\
-    <div v-if="error" class="error">\
-      {{ error }}\
-    </div>\
-\
-    <div v-if="post" class="content">\
-      <h2></h2>\
-      <div v-for="port in post">{{ port.Asset }} {{ port.Count }} {{ port.CostBasis }} {{ port.Current }} {{ port.Return }}</div>\
-    </div>\
-  </div>';
-
 var portfolio_page = {
   template: '<portfolio-list>Your Portfolio HERE!</portfolio-list>'
 };
@@ -21,7 +6,14 @@ Vue.component('portfolio-list', {
     return {
       loading: false,
       post: null,
-      error: null
+      error: null,
+      portfolio: [],
+      overall_performance: []
+    }
+  },
+  computed: {
+    performance: function(){
+      return Math.ceil(100*(this.overall_performance.reduce(function(a, b) { return a + b; }, 0) / 100000)) / 100; 
     }
   },
   created () {
@@ -37,21 +29,48 @@ Vue.component('portfolio-list', {
     fetchData () {
       this.error = this.post = null;
       this.loading = true;
+      this.p = null;
       // replace getPost with your data fetching util / API wrapper
       var portfolio = new PortfolioAPI().Get().then((p) => {
-        for(var port in p){
-          new DataAPI(GlobalConfig.xuserid, GlobalConfig.xtoken).GetQuote(p[port].Asset).then(res => {
-              p[port].Current = res.Last;
-              p[port].Return = (p[port].CostBasis) / (p[port].Count * res.Last);
-              this.error = "TESTING";
+        
+        this.portfolio = p;
+        var overall_performance = [];
+        var getLatestValues = function (key, ports, that){
+          new DataAPI(GlobalConfig.xuserid, GlobalConfig.xtoken).GetQuote(ports[key].Asset).then(res => {
+            if(ports[key].Asset != "USD"){
+              ports[key].Current = res.Last;
+              ports[key].Return = Math.ceil(((1 - ((ports[key].CostBasis) / (ports[key].Count * res.Last))) * 100) * 100) / 100;
+              ports[key].Return += "%";
+              that.portfolio.splice(key, 1,ports[key]);
+              that.overall_performance.push(ports[key].Count * res.Last);
+            }
+            
           });
-        }
+      };
 
-      	this.post = p;
+      for(var key in p){
+        getLatestValues(key, p, this);
+      }
+
+      	
         this.loading = false;
       });
 
     }
   },
-	template: template
+	template: '<div class="post">\
+    <div class="loading" v-if="loading">\
+      Loading...\
+    </div>\
+\
+    <div v-if="error" class="error">\
+      {{ error }}\
+    </div>\
+\
+    <div v-if="portfolio" class="content">\
+      <h2></h2>\
+      <div>Overall Performance: {{ performance }}%</div>\
+      <div v-for="port in portfolio">{{ port.Asset }} {{ port.Count }} {{ port.CostBasis }} {{ port.Current }} {{ port.Return }}</div>\
+    </div>\
+  </div>'
 });
