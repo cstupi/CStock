@@ -6,10 +6,10 @@ var GlobalConfig = {
 };
 
 const routes = [
-  { path: '/Portfolio', component: portfolio_page },
-  { path: '/Trade', component: trade_page, props: { gameId: 1} },
-  { path: '/login', component: login },
-  { path: '/games', component: game_page}
+  { path: '/Portfolio/:gameid', component: portfolio_page },
+  { path: '/Trade/:gameid', component: trade_page },
+  { path: '/Login', component: login },
+  { path: '/Games', component: game_page}
 ]
 
 const router = new VueRouter({

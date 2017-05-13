@@ -18,6 +18,6 @@ function encrypt(token, key, iv) {
 }
    
 router.get('/userid', function (req, res) {
-    res.status(200).send(config.UserId.toString());
+    res.status(200).send(config.XigniteUserId.toString());
 });
 module.exports = router;

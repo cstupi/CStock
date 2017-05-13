@@ -1,5 +1,5 @@
 var portfolio_page = {
-  template: '<portfolio-list>Your Portfolio HERE!</portfolio-list>'
+  template: '<portfolio-list></portfolio-list>'
 };
 Vue.component('portfolio-list', {
 	data() {
@@ -27,11 +27,13 @@ Vue.component('portfolio-list', {
   },
   methods: {
     fetchData () {
+      if(!this.$route.params.gameid)
+        router.push({ path: 'games' })
       this.error = this.post = null;
       this.loading = true;
       this.p = null;
       // replace getPost with your data fetching util / API wrapper
-      var portfolio = new PortfolioAPI().Get().then((p) => {
+      var portfolio = new PortfolioAPI().Get(this.$route.params.gameid).then((p) => {
         
         this.portfolio = p;
         var overall_performance = [];

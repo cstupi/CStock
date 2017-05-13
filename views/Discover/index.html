@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Find Stocks</title>
+	<title>Market Mayhem</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="/lib/chartist/chartist.min.css" rel="stylesheet" type="text/css" />
 	<link href="/css/pure/pure-min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
+	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/base-min.css">
 	<link rel="stylesheet" href="/css/login.css">
 
 </head>
@@ -11,9 +14,7 @@
 <div id="app">
   <h1>Market Mayhem</h1>
   <div>
-  <router-link to="/games">Games</router-link>
-    <router-link to="/portfolio">Portfolio</router-link>
-    <router-link to="/trade">Trade</router-link>
+  	<router-link to="/games">Games</router-link>
     <router-link to="/login">Login</router-link>
   </div>
   <home-page></home-page>
@@ -32,7 +33,7 @@
 	<script src="/js/stockinfoapp/API/TradeAPI.js"></script>
 	<script src="/js/stockinfoapp/AssetInfo.js"></script>
 	<script src="/js/stockinfoapp/Components/portfolio/portfolio.js"></script>
-	<script src="/js/stockinfoapp/Components/user/user.js"></script>
+	<script src="/js/stockinfoapp/Components/user/login.js"></script>
 	<script src="/js/stockinfoapp/Components/trade/trade.js"></script>
 	<script src="/js/stockinfoapp/Components/Game/game.js"></script>
 	<script src="/js/stockinfoapp/Components/Home/home.js"></script>

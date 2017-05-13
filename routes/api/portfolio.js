@@ -20,7 +20,7 @@ router.get('/:gameid', function(req, res){
 		res.status(401).send('Not Logged In');
 		return;
 	}
-	PortfolioData.GetAllPortfoliosForUser(req.session.passport.user.userid, function(data){
+	PortfolioData.GetPortfolioForGame(req.session.passport.user.userid, req.params.gameid, function(data){
 		res.send(data);
 	}, function(){
 		res.send(null);

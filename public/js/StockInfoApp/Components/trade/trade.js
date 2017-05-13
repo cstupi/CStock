@@ -13,10 +13,11 @@ Vue.component('trade-info', {
 			orderType: "",
 			transactionType: "",
 			security: { Security: null },
-			gameid: 16
+			gameid: null
 		}		
 	},
 	created () { 
+		this.gameid = this.$route.params.gameid;
 	},
 	watch: { 
 		symbol: function(val) { 

@@ -10,7 +10,7 @@ Vue.component('login-form', {
 	methods: {
 		login() {
 			var userapi = new UserAPI().LoginUser(this.username, this.password).then((result) => {
-				if(result.data){
+				if(result){
 					this.message = 'Success';
 					this.failed = false;
 				} else {
@@ -22,7 +22,7 @@ Vue.component('login-form', {
 	},
 	template: '<div class="login">\
 				<input type="text" v-model="username" placeholder="Username" />\
-				<input type="text" v-model="password" placeholder="Password" />\
+				<input type="password" v-model="password" placeholder="Password" />\
 				<input type="submit" value="Login" v-on:click="login()"/>\
 				<a href="">Lost your password?</a>\
 				{{ message }}\

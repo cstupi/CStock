@@ -8,9 +8,9 @@ Vue.component('register-form', {
 		message: ""
 	}},
 	methods: {
-		login() {
-			var userapi = new UserAPI().LoginUser(this.username, this.password).then((result) => {
-				if(result.data){
+		register() {
+			var userapi = new UserAPI().RegisterUser(this.username, this.password).then((result) => {
+				if(result){
 					this.message = 'Success';
 					this.failed = false;
 				} else {
@@ -22,9 +22,9 @@ Vue.component('register-form', {
 	},
   	template: '<div class="login">\
             	<input type="text" v-model="username" placeholder="Username" />\
-            	<input type="text" v-model="password" placeholder="Password" />\
-                <input type="text" placeholder="Re-Enter Password" />\
-            	<input type="submit" value="Login" v-on:click="login()"/>\
+            	<input type="password" v-model="password" placeholder="Password" />\
+                <input type="password" placeholder="Re-Enter Password" />\
+            	<input type="submit" value="Login" v-on:click="register()"/>\
             	<a href="">Lost your password?</a>\
             	{{ message }}\
         	</div>'
