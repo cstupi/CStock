@@ -11,8 +11,7 @@ Vue.component('login-form', {
 		login() {
 			var userapi = new UserAPI().LoginUser(this.username, this.password).then((result) => {
 				if(result){
-					this.message = 'Success';
-					this.failed = false;
+					router.push('/games');
 				} else {
 					this.failed = true;
 					this.message = 'Failed to login';
@@ -21,13 +20,7 @@ Vue.component('login-form', {
 		},
 		register() {
 			var userapi = new UserAPI().RegisterUser(this.username, this.password).then((result) => {
-				if(result){
-					this.message = 'Success';
-					this.failed = false;
-				} else {
-					this.failed = true;
-					this.message = 'Failed to login';
-				}
+				this.message = 'Successfully Registered';
 			});
 		}
 	},
@@ -36,7 +29,6 @@ Vue.component('login-form', {
 				<input type="password" v-model="password" placeholder="Password" />\
 				<input type="submit" value="Login" v-on:click="login()"/>\
 				<input type="submit" value="Register" v-on:click="register()"/>\
-				<a href="" class="floated right">Lost your password?</a>\
 				{{ message }}\
 			</div>'
 });

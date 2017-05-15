@@ -127,6 +127,6 @@ market.Start = function(){
 		order.GetAllPendingMarketOrders(RunMarket, function(){ 
 			console.log("Error getting orders for market");
 		});
-	}, 30000);
+	}, 1000);
 }
 module.exports = market;

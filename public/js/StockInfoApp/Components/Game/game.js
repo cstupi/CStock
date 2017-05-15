@@ -92,6 +92,7 @@ Vue.component('game-list', {
       if(!this.password || this.password.length == 0)
         this.password = null;
       new GameAPI().JoinGame(this.selectedGame, this.password).then((res) => {
+        router.push("/portfolio/" + gameid);
         this.error = res;
       });
     },
@@ -115,7 +116,8 @@ Vue.component('game-list', {
       </div>\
     </div>\
     <div v-if="showpasswordbox">\
-    <input v-model="password" type="password"/>\
+      <label>Game Password: </label> \
+      <input v-model="password" type="password" style="clear:both !important" />\
     <button  v-on:click="JoinGame(selectedGame, password)">Join</button>\
     <button v-on:click="CancelJoin()">Cancel</button>\
     </div>\

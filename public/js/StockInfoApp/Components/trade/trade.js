@@ -2,15 +2,13 @@ var trade_page = {
 	template: '<trade-info>Buy some stuff</trade-info>'
 };
 Vue.component('trade-info', { 
-	/* Note: gameid should be a prop, passed in via route -- hardcoded now for testing */
-	//props: ['gameid'],
 	data() { 
 		return {
 			loading: false,
 			symbol: "",
 			quantity: 0,
 			price: 0.0,
-			orderType: "",
+			orderType: 1,
 			transactionType: "",
 			security: { Security: null },
 			gameid: null
@@ -44,6 +42,9 @@ Vue.component('trade-info', {
 				this.transactionType, (result) => { 
 					console.log("Order Result: " + result)
 				});
+			
+			var id = this.gameid;
+			setTimeout(function() { router.push('/portfolio/' + id) }, 2000);
 		},
 		clear() { 
 			this.symbol = "";
@@ -61,33 +62,44 @@ Vue.component('trade-info', {
 		    <div style="background-color: #e8e240;border-radius: 5px;borer: 1px solid #000;" v-if="security.Security"> \
 		    	<em>{{ security.Security.Name }}</em> ${{ security.Last }} \
 		    </div>\
-			<div class="trade pure-g"> \
+			<div class="trade pure-form pure-form-aligned"> \
 				<fieldset> \
-					<label class="pure-u-1-2">Symbol:</label> \
-					<input class="pure-u-1-2" type="text" placeholder="Symbol" v-model="symbol" /> \
-					<label class="pure-u-1-2">Quantity:</label> \
-					<input class="pure-u-1-2" type="text" placeholder="Quantity" v-model="quantity" /> \
-					<label class="pure-u-1-2">Limit Price:</label> \
-					<input class="pure-u-1-2" type="text" placeholder="Price" v-model="price" /> \
-					<label class="pure-u-1-2">Order Type:</label> \
-					<select class="pure-u-1-2" v-model="orderType"> \
-						<option disabled value="">Choose</option> \
-						<option value="1">Market</option> \
-						<option value="2">Limit</option> \
-						<option value="3">Stop</option> \
-					</select> \
-					<label class="pure-u-1-2">Type:</label> \
-					<select class="pure-u-1-2" v-model="transactionType"> \
-						<option disabled value="" selected>Choose</option> \
-						<option value="1">Buy</option> \
-						<option value="2">Sell</option> \
-						<option value="3">Buy Cover</option> \
-						<option value="4">Sell Short</option> \
-						<option value="5">Div</option> \
-					</select> \
+					<div class="pure-control-group">\
+						<label>Symbol:</label> \
+						<input type="text" placeholder="Symbol" v-model="symbol" /> \
+					</div> \
+					<div class="pure-control-group"> \
+						<label>Quantity:</label> \
+						<input type="text" placeholder="Quantity" v-model="quantity" /> \
+					</div> \
+					<div class="pure-control-group"> \
+						<label>Limit Price:</label> \
+						<input type="text" placeholder="Price" v-model="price" /> \
+					</div> \
+					<div class="pure-control-group"> \
+						<label>Order Type:</label> \
+						<select v-model="orderType"> \
+							<option value="1">Market</option> \
+							<option value="2">Limit</option> \
+							<option value="3">Stop</option> \
+						</select> \
+					</div> \
+					<div class="pure-control-group"> \
+						<label >Type:</label> \
+						<select v-model="transactionType"> \
+							<option disabled value="" selected>Choose</option> \
+							<option value="1">Buy</option> \
+							<option value="2">Sell</option> \
+							<option value="3">Buy Cover</option> \
+							<option value="4">Sell Short</option> \
+							<option value="5">Div</option> \
+						</select> \
+					</div> \
+					<div class="pure-control-group">\
+						<button v-on:click="makeTrade()" class="pure-button pure-button-primary">Place Trade</button> \
+						<button v-on:click="clear()" class="pure-button">Clear</button> \
+					</div> \
 				</fieldset> \
 			</div> \
-			<button v-on:click="makeTrade()" class="pure-button pure-button-primary">Place Trade</button> \
-			<button v-on:click="clear()" class="pure-button">Clear</button> \
 		</div>'
 });
