@@ -34,3 +34,13 @@
 	background-color: #149900;
 	color: #d6d4d4;
 }
+
+.asset-info { 
+	cursor: pointer;
+ }
+
+.asset-chart { 
+	border: 1px solid #5d6b82;
+	width: 80%;
+	margin: auto;
+ }

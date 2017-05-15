@@ -1,10 +1,6 @@
 'use strict';
 var AssetInfo = {
 	props: {
-		user: {
-			defaultValue: { UserId: 0, Token: ''},
-			required: true
-		},
 		symbol: {
 			type: String,
 			default: 'MSFT'
@@ -16,16 +12,16 @@ var AssetInfo = {
 	
 	methods: {
 		GetQuote: function(symbol){
-			if(!symbol || this.user.UserId == 0 || this.user.Token == '')
+			if(!symbol || GlobalConfig.xuserid == 0 || GlobalConfig.xtoken == '')
 				return;
 			console.log('getting data');
-			var api = new DataAPI(this.user.UserId, this.user.Token);
+			var api = new DataAPI(GlobalConfig.xuserid, GlobalConfig.xtoken);
 			api.GetQuote(this.symbol).then(response =>  { this.$nextTick(function () { 
 					this.asset = response; 
 				}); 
 			});
 			
-			api.GetChartBars(this.symbol, moment('3/25/2012').format('MM/DD/YYYY h:mm:ss a'), moment('3/25/2017').format('MM/DD/YYYY h:mm:ss a')).then(response => {
+			api.GetChartBars(this.symbol, moment('3/25/1980').format('MM/DD/YYYY h:mm:ss a'), moment('5/15/2017').format('MM/DD/YYYY h:mm:ss a')).then(response => {
 				var series = [];
 				var prices = [];
 				var labels = [];
@@ -34,13 +30,8 @@ var AssetInfo = {
 					labels.push(response.ChartBars[i].StartDate);
 				}
 				series.push({ name: this.symbol, data: prices });
-				api.GetChartBars('SPY', moment('3/25/2012').format('MM/DD/YYYY h:mm:ss a'), moment('3/25/2017').format('MM/DD/YYYY h:mm:ss a')).then(spyResponse => {
-					var spyprices = [];
-					for(let i in spyResponse.ChartBars){
-						spyprices.push({ y: spyResponse.ChartBars[i].Close, x: new Date(spyResponse.ChartBars[i].StartDate) });
-					}
-					series.push({ name: 'SPY', data: spyprices });
-					this.$nextTick(function(){
+
+				this.$nextTick(function(){
 					new Chartist.Line('.chart-cont', {
 							  // labels: labels,
 							  series: series
@@ -56,14 +47,10 @@ var AssetInfo = {
 							}
 						});
 					});
-				});
 			});
 		}
 	},
 	watch: {
-		user: function(val){
-			this.GetQuote(this.symbol);
-		},
 		symbol: function(val){
 			this.GetQuote(val);
 		}
@@ -72,5 +59,7 @@ var AssetInfo = {
 		console.log('mounted');
 		this.GetQuote(this.symbol);
 	},
-	template: "<div><div>{{asset.Security.Name}}</div><div>{{asset.Security.Symbol}}</div><div>{{asset.Last}}</div><div class='chart-cont'></div></div>"
+	template: "<div><div>{{asset.Security.Name}} ({{asset.Security.Symbol}}):  ${{asset.Last}}</div><div class='chart-cont'></div></div>"
 };
+
+Vue.component('asset-info', AssetInfo);
