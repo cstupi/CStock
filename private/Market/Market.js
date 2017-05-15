@@ -52,7 +52,7 @@ function ExecuteOrder(o, price, cashOnHand, bankId){
 				var startingCash = starting_cash; // hard coded up top for now
 				if(transactiontype[o["TransactionType"]] == transactiontype["BUY"] || transactiontype[o["TransactionType"]] == transactiontype["BUYCOVER"]){
 					newCount = result.length > 0 ? parseInt(port["Count"]) + count : count;
-					newCostBasis = result.length > 0 ? parseInt(port["CostBasis"]) + costbasis : costBasis;
+					newCostBasis = result.length > 0 ? parseInt(port["CostBasis"]) + costBasis : costBasis;
 					newCash = cashOnHand - costBasis;
 				}else if(transactiontype[o["TransactionType"]] == transactiontype["SELL"] || transactiontype[o["TransactionType"]] == transactiontype["SELLSHORT"]) {
 					newCount = parseInt(port["Count"]) - count;
