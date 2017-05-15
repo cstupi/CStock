@@ -11,8 +11,13 @@ h1{
   text-align: center;
   font-family: Arial;
   font-weight: normal;
-  margin: 2em auto 0px;
 }
+
+.nav { 
+  background-color: #09cca6;
+  margin: 10px 0px;
+}
+
 .outer-screen{
   background: #13202c;
   width: 900px;
@@ -69,6 +74,11 @@ h1{
   -webkit-border-radius: 10px;
 }
 
+.login a { 
+  padding: 15px 0px 15px 15px;
+  font-size: 0.8em;
+ }
+
 .register{
   width: 400px;
   height: 300px;
@@ -79,7 +89,6 @@ h1{
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
 }
-
 
 input[type="text"],input[type="password"]{
   display: block;
