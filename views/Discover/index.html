@@ -8,14 +8,18 @@
 	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
 	<link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/base-min.css">
 	<link rel="stylesheet" href="/css/login.css">
-
+	<link rel="stylesheet" href="/css/portfolio.css">
 </head>
 <body>
 <div id="app">
-  <h1>Market Mayhem</h1>
-  <div>
-  	<router-link to="/games">Games</router-link>
-    <router-link to="/login">Login</router-link>
+  <header>
+  	<h1>Market Mayhem</h1>
+  </header>
+  <div class="nav pure-menu pure-menu-horizontal">
+    <ul class="pure-menu-list">
+	  	<li class="pure-menu-item"><router-link to="/games" class="pure-menu-link">Games</router-link></li>
+	    <li class="pure-menu-item"><router-link to="/login" class="pure-menu-link">Login</router-link></li>
+    </ul>
   </div>
   <home-page></home-page>
 
