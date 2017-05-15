@@ -8,7 +8,8 @@ Vue.component('portfolio-list', {
       post: null,
       error: null,
       portfolio: [],
-      overall_performance: []
+      overall_performance: [],
+      selectedAsset: null
     }
   },
   computed: {
@@ -65,6 +66,9 @@ Vue.component('portfolio-list', {
         this.loading = false;
       });
 
+    },
+    selectAsset(asset) { 
+      this.selectedAsset = asset ? asset.Asset : null;
     }
   },
 	template: '<div class="post">\
@@ -93,7 +97,7 @@ Vue.component('portfolio-list', {
         </thead> \
         <tbody> \
           <tr v-for="port in portfolio"> \
-            <td>{{ port.Asset }}</td> \
+            <td><span class="asset-info" v-on:click="selectAsset(port); return false;">{{ port.Asset }}</span></td> \
             <td>{{ port.Count.toLocaleString() }}</td> \
             <td>${{ port.Value.toLocaleString() }}</td> \
             <td>${{ port.AverageCost.toLocaleString() }}</td> \
@@ -106,5 +110,9 @@ Vue.component('portfolio-list', {
         </tbody> \
       </table> \
     </div>\
+    \
+    <div class="asset-chart" v-if="selectedAsset"> \
+      <asset-info v-bind:symbol="selectedAsset"></asset-info>\
+    </div> \
   </div>'
 });
