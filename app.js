@@ -15,6 +15,8 @@ var UserData    = require('./private/Database/SQL/UserData');
 
 var Market      =  require('./private/Market/Market');
 
+var webport = 3001;
+
 passport.use(new LocalStrategy(
   function(username, password, done) {
     UserData.GetUser(username, function (err, user) {
@@ -61,11 +63,15 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
+//app.set('views', path.join(__dirname, 'views'));
+//app.engine('html', require('ejs').renderFile);
+//app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -77,8 +83,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 app.use(helmet());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', express.static(__dirname + '/views'));
+//app.use(express.static(path.join(__dirname, 'public')));
+//app.use('/', express.static(__dirname + '/views'));
 
 
 app.use('/api/user', require('./routes/api/user'));
@@ -122,6 +128,7 @@ app.use(function (err, req, res, next) {
 
 module.exports = app;
 Market.Start();
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+app.listen(webport, function () {
+  console.log(`Example app listening on port ${webport}!`);
+  console.log(new Date());
 });

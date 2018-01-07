@@ -123,10 +123,10 @@ function RunMarket(orders){
 }
 market.Start = function(){
 	setInterval(function(){
-		console.log("Running Market");
+		console.log("Running Market at " + new Date());
 		order.GetAllPendingMarketOrders(RunMarket, function(){ 
 			console.log("Error getting orders for market");
 		});
-	}, 1000);
+	}, 60000);
 }
 module.exports = market;

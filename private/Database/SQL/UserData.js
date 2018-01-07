@@ -6,6 +6,8 @@ userdata.GetUser = function(username, callback){
 
 	var user;
 	connection.query('SELECT UserId, Username,Password, Locked, JoinDate, ConfirmKey, ConfirmDate FROM CStock.User WHERE Locked = ? AND username = ?',['false', username], function (error, results, fields) {
+	  if(!results || results.length == 0)
+	  	return callback(error, null);
 	  user = new User(results[0].UserId, results[0].Username, results[0].Password, results[0].Locked,
 	  	results[0].JoinDate, results[0].ConfirmKey, results[0].ConfirmDate);
 
