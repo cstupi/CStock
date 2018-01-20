@@ -17,6 +17,12 @@ var Market      =  require('./private/Market/Market');
 
 var webport = 3001;
 
+const allowed_origins = [
+'localhost:8080',
+'localhost:3001',
+'localhost:3000'
+];
+
 passport.use(new LocalStrategy(
   function(username, password, done) {
     UserData.GetUser(username, function (err, user) {
@@ -64,10 +70,16 @@ app.use(session({
     saveUninitialized: true
 }));
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  let origin = allowed_origins.indexOf(req.header('host').toLowerCase()) != -1 ? req.headers.origin : '-';
+  res.header("Access-Control-Allow-Origin", origin);
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS, PUT');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header("Access-Control-Allow-Credentials", true);
+//  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
 //app.engine('html', require('ejs').renderFile);

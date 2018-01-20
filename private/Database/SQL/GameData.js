@@ -12,6 +12,7 @@ game.GetGame = function(gameid, callback, failure){
 			callback(results);
 	});
 }
+// This returns password and should first require password check
 game.GetGameByName = function(GameName, callback, failure){
 	connection.query('SELECT GameId, GameName, GamePassword, CreatedBy, CreateDate,StartDate,EndDate FROM Game WHERE GameName = ?', GameName, function(error,results,fields){
 		if(error){
@@ -45,7 +46,7 @@ game.CreateGame = function(GameName, GamePassword, CreatedBy,StartDate,EndDate, 
 }
 
 game.GetAllGames = function(callback,failure){
-	connection.query('SELECT GameId, GameName, CreatedBy, CreateDate,StartDate,EndDate FROM Game',function(error, results, fields){
+	connection.query('SELECT GameId, GameName, NOT IsNull(GamePassword) AS HasPassword, CreatedBy, CreateDate,StartDate,EndDate FROM Game',function(error, results, fields){
 		if(error){
 			if(failure)
 				failure();

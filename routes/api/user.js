@@ -8,7 +8,10 @@ var UserData 	= require('../../private/Database/SQL/UserData');
 
 
 router.get('/', function (req, res) {
-    res.send(req.session.passport.user);
+    if(req.session && req.session.passport)
+        res.send(req.session.passport.user);
+    else
+        res.send(null);
 });
 
 router.post('/login', passport.authenticate('local'),

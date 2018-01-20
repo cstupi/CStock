@@ -22,7 +22,7 @@ router.get('/Members/:gameid/', function (req, res) {
 	}, function(error){
 		console.log(error);
 		res.status(500).send();
-});
+	});
 });
 router.get('/GamesForUser', function(req, res){
 	if(req.session.passport.user == null){
@@ -48,23 +48,31 @@ router.post('/Create', function(req,res){
 		res.status(401).send();
 		return;
 	}
-	Game.CreateGame(req.body.gamename, req.body.gamepassword, req.session.passport.user.userid,req.body.startdate,req.body.enddate,function(){
+	let userid = req.session.passport.user.userid;
+	console.log('Create userid: ' + userid);
+	if(req.body.enddate == '')
+		req.body.enddate = null;
+	Game.CreateGame(req.body.gamename, req.body.gamepassword, userid,req.body.startdate,req.body.enddate,function(){
 		Game.GetGameByName(req.body.gamename, function(result){
-			Game.AddUser(req.session.passport.user.userid, result[0].GameId, new Date(), function(){
-				portfolio.AddToPortfolio(req.session.passport.user.userid, "USD", starting_cash, result[0].GameId, starting_cash,function(){ response.status(200).send(); },function(error){
+			Game.AddUser(userid, result[0].GameId, new Date(), function(){
+				portfolio.AddToPortfolio(userid, "USD", starting_cash, result[0].GameId, starting_cash,function(){ response.status(200).send(); },function(error){
+					console.log('Error initializing portfolio');
 					console.log(error);
 					res.status(500).send();
 				});
 			}, function(error){
+				console.log('error adding user to game');
 				console.log(error);
 				res.status(500).send();
 			});
 		}, function(error){
+			consoloe.log('error getting newly created game')
 			console.log(error);
 			response.status(400).send();
 		});
 		
 	} ,function(error){
+		console.log('error creating game');
 		console.log(error);
 		response.status(500).send();
 	});
