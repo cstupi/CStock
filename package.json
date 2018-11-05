@@ -10,10 +10,12 @@
   "author": "CS",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "bcrypt": "^3.0.2",
     "hapi": "^17.6.0",
-    "hapi-auth-cookie": "^9.0.0",
+    "hapi-auth-jwt2": "^8.1.0",
     "joi": "^14.0.1",
+    "jsonwebtoken": "^8.3.0",
     "mocha": "^5.2.0",
     "pg": "^7.6.0",
     "uuid": "^3.3.2"

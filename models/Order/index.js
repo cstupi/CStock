@@ -7,6 +7,7 @@ const Statuses = ['COMPLETE', 'CANCELED', 'PENDING']
 
 const GETQUERY = 'SELECT * FROM Order WHERE Owner = $1 AND Game = $2';
 const LISTQUERY = 'SELECT * FROM Order WHERE Game = $1';
+const GETBYID = 'SELECT * FROM Order WHERE Id = $1';
 
 async function Create(o){
     if(Statuses.indexOf(o.Status) < 0)
@@ -21,20 +22,21 @@ async function Create(o){
      'Values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)', 
      [o.Id, o.Owner, o.Game, o.CreatedAt, o.Quantity, o.Limit, o.ExpiresAt, o.Reason, o.Identifier, o.OrderType,o.TransactionType]); 
 }
+async function Get(oId){
+    return await db.query(GETBYID, [oId]).rows[0];
+}
 async function UpdateStatus(oId, status){
     if(Statuses.indexOf(o.Status) < 0)
         throw `Invalid Order Status for User: ${o.Owner} Game: ${o.Game} Identifier: ${o.Identifier}`;
     
     return await db.query('UPDATE Order SET Status = $1 WHERE Id = $2',[status,oId]);
 }
-async function GetPending(uId, gId){
-    return await db.query(`${GETQUERY} AND Status = "PENDING"`, [uId,gId]);
-}
-async function GetCompleted(uId, gId ){
-    return await db.query(`${GETQUERY} AND Status = "COMPLETED"`, [uId,gId]);
-}
-async function GetCanceled(uId, gId){
-    return await db.query(`${GETQUERY} AND Status = "CANCELED"`, [uId,gId]);
+async function GetForUser(uId, gId, status)
+{
+    if(status && Statuses.indexOf(status) >= 0){
+        return await db.query(`${GETQUERY} AND Status = $3`, [uId, gId, status]);
+    }
+    return await db.query(`${GETQUERY}` , [uId, gId]);
 }
 async function ListPending(gId){
     return await db.query(`${LISTQUERY} AND Status = "PENDING"`, [gId]);
@@ -61,17 +63,14 @@ class Order {
     static Create(o){
         return Create(o);
     }
-    static UpdateStatus(status){
-        return UpdateStatus(status);
+    static Get(o){
+        return Get(o);
     }
-    static GetPending(uId, gId){
-        return GetPending(uId, gId);
+    static UpdateStatus(oid, status){
+        return UpdateStatus(oid, status);
     }
-    static GetCompleted(uId, gId ){
-        return GetCompleted(uId, gId);
-    }
-    static GetCanceled(uId, gId){
-        return GetCanceled(uId, gId);
+    static GetForUser(uId,gId, status){
+        return GetForUser(uId, gId, status);
     }
     static ListPending(gId){
         return ListPending(gId);

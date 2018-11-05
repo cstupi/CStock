@@ -9,6 +9,7 @@ let config = {
     env: process.env.ENV || 'dev',
     cookie: process.env.COOKIE || 'CStock',
     cookiePassword: process.env.COOKIEPASSWORD,
+    password: process.env.PASSWORD,
     DataProvider: {
         Token: process.env.DATA_TOKEN,
         Key: process.env.DATA_KEY,

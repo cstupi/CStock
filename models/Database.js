@@ -13,12 +13,12 @@ module.exports = {
             const client = await pool.connect()
             let res
             try {
-              await client.query('BEGIN')
+              await client.query('BEGIN');
               try {
                 res = await client.query(text, values)
-                await client.query('COMMIT')
+                await client.query('COMMIT');
               } catch (err) {
-                await client.query('ROLLBACK')
+                await client.query('ROLLBACK');
                 throw err
               }
             } finally {
