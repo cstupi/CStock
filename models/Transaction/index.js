@@ -1,7 +1,7 @@
 const db = require('../Database');
 const uuidv4 = require('uuid/v4');
 async function Create(oId, count, price){
-    return await db.query('INSERT INTO public.Transaction (Id, Order, Count, Price, Date) VALUES ($1,$2,$3,$4,$5)',
+    return await db.query('INSERT INTO public."Transaction" ("Id", "Order", "Count", "Price", "Date") VALUES ($1,$2,$3,$4,$5)',
     [uuidv4(), oId, count, price, new Date()])
 }
 

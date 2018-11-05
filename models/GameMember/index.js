@@ -12,10 +12,10 @@ async function RemoveMember(gId, uId){
     return await db.query('DELETE FROM public."GameMembers" WHERE User = $1 AND Game = $2', [uId, gId]);
 }
 async function GetMembers(gId){
-    return await db.query(`${SELECT} WHERE Game = $1`, [gId]);
+    return (await db.query(`${SELECT} WHERE Game = $1`, [gId])).rows;
 }
 async function GetGames(uId){
-    return await db.query(`${SELECT} WHERE User = $1`, [uId]);
+    return (await db.query(`${SELECT} WHERE User = $1`, [uId])).rows;
 }
 class GameMember {
     constructor() {

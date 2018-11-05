@@ -5,9 +5,9 @@ const OTypes = ['MARKET','LIMIT','STOP'];
 const TTypes = ['BUY','SELL','BUYSHORT','SELLSHORT'];
 const Statuses = ['COMPLETE', 'CANCELED', 'PENDING']
 
-const GETQUERY = 'SELECT * FROM Order WHERE Owner = $1 AND Game = $2';
-const LISTQUERY = 'SELECT * FROM Order WHERE Game = $1';
-const GETBYID = 'SELECT * FROM Order WHERE Id = $1';
+const GETQUERY = 'SELECT * FROM "Order" WHERE "Owner" = $1 AND "Game" = $2';
+const LISTQUERY = 'SELECT * FROM "Order" WHERE "Game" = $1';
+const GETBYID = 'SELECT * FROM "Order" WHERE "Id" = $1';
 
 async function Create(o){
     if(Statuses.indexOf(o.Status) < 0)
@@ -18,31 +18,32 @@ async function Create(o){
         throw `Invalid Transaction Type for User: ${o.Owner} Game: ${o.Game} Identifier: ${o.Identifier}`;
     o.CreatedAt = new Date();
     o.Id = uuidv4();
-    return await db.query('INSERT INTO Order (Id, Owner, Game, CreatedAt, Quantity, Limit, ExpiresAt, Reason, Identifier, OrderType, TransactionType) VALUES' +
-     'Values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)', 
-     [o.Id, o.Owner, o.Game, o.CreatedAt, o.Quantity, o.Limit, o.ExpiresAt, o.Reason, o.Identifier, o.OrderType,o.TransactionType]); 
+    await db.query('INSERT INTO "Order" ("Id", "Owner", "Game", "CreatedAt", "Quantity", "Limit", "ExpiresAt", "Reason", "Identifier", "OrderType", "TransactionType", "Status") VALUES' +
+     ' ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)', 
+     [o.Id, o.Owner, o.Game, o.CreatedAt, o.Quantity, o.Limit, o.ExpiresAt, o.Reason, o.Identifier, o.OrderType,o.TransactionType, o.Status]); 
+     return o;
 }
 async function Get(oId){
-    return await db.query(GETBYID, [oId]).rows[0];
+    return (await db.query(GETBYID, [oId])).rows[0];
 }
 async function UpdateStatus(oId, status){
-    if(Statuses.indexOf(o.Status) < 0)
+    if(Statuses.indexOf(status) < 0)
         throw `Invalid Order Status for User: ${o.Owner} Game: ${o.Game} Identifier: ${o.Identifier}`;
     
-    return await db.query('UPDATE Order SET Status = $1 WHERE Id = $2',[status,oId]);
+    return await db.query('UPDATE "Order" SET "Status" = $1 WHERE "Id" = $2',[status,oId]);
 }
 async function GetForUser(uId, gId, status)
 {
     if(status && Statuses.indexOf(status) >= 0){
-        return await db.query(`${GETQUERY} AND Status = $3`, [uId, gId, status]);
+        return (await db.query(`${GETQUERY} AND "Status" = $3`, [uId, gId, status])).rows;
     }
-    return await db.query(`${GETQUERY}` , [uId, gId]);
+    return (await db.query(`${GETQUERY}` , [uId, gId])).rows;
 }
 async function ListPending(gId){
-    return await db.query(`${LISTQUERY} AND Status = "PENDING"`, [gId]);
+    return (await db.query(`${LISTQUERY} AND "Status" = "PENDING"`, [gId])).rows;
 }
 async function ListCompleted(gId, count) {
-    return await db.query(`${LISTQUERY} AND Status = "PENDING" OR Status = "Canceled"`, [gId]);
+    return (await db.query(`${LISTQUERY} AND "Status" = "PENDING" OR "Status" = "Canceled"`, [gId])).rows;
 }
 class Order {
     constructor(owner, identifier, oType, tType, qty, limit){

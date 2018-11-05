@@ -12,7 +12,6 @@ describe('Order input validation', async () => {
             assert.strictEqual(o.OrderType, 'MARKET');
             assert.strictEqual(o.TransactionType, 'BUY');
             assert.strictEqual(o.Quantity, 10);
-            console.log(JSON.stringify(o));
         });
     });
     describe('Valid inputs', async () => {

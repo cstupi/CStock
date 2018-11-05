@@ -35,7 +35,6 @@ module.exports = [{
         auth: false, 
         handler: async (req, res) => {
             let user = await User.Authenticate(req.payload);
-            console.log(user);
             if(!user)
                 return res.response().code(401);
             delete user.Password;

@@ -1,7 +1,10 @@
 'use strict';
 
 const Hapi = require('hapi');
-const Auth = require('./routes/User')
+const Auth = require('./routes/User');
+const Inert = require('inert');
+const Vision = require('vision');
+const HapiSwagger = require('hapi-swagger');
 const config = require('./config');
 let server = null;
 
@@ -31,7 +34,26 @@ async function start() {
          /*
         JWT
         */
-        await server.register(require('hapi-auth-jwt2'));
+        await server.register([
+            require('hapi-auth-jwt2'),
+            Inert,
+            Vision,
+            {
+                plugin: HapiSwagger,
+                options: {
+                    info: {
+                        title: 'CStock API Documentation'
+                    },    
+                    securityDefinitions: {
+                        jwt: {
+                            type: 'apiKey',
+                            name: 'Authorization',
+                            in: 'header'
+                        }
+                    }
+                }
+            }
+        ]);
         server.auth.strategy('jwt','jwt', {
             key: config.password,
             validate: validate,

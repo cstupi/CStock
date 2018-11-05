@@ -12,8 +12,8 @@ const orderValidation = Joi.object({
     Limit: Joi.number(),
     ExpiresAt: Joi.date(),
     Reason: Joi.string(),
-    Identifier: Joi.string(),
-    OrderType: Joi.string(),
+    Identifier: Joi.string().required(),
+    OrderType: Joi.string().required(),
     TransactionType: Joi.string()
 });
 

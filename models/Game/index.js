@@ -17,11 +17,11 @@ async function Create(game){
 }
 async function List(user){
     if(user)
-        return db.query(`${SELECT} JOIN GameMembers g on g.Game = Game.Id WHERE g.User = $1`, [user]).rows;
-    return await db.query(SELECT).rows;
+        return (await db.query(`${SELECT} JOIN GameMembers g on g.Game = Game.Id WHERE g.User = $1`, [user])).rows;
+    return (await db.query(SELECT)).rows;
 }
 async function Get(id){
-    let res = await db.query(`${SELECT} WHERE id = $1`,[id]);
+    let res = await db.query(`${SELECT} WHERE "Id" = $1`,[id]);
     if(res.rows.length > 1)
         throw `Bad game data for id: ${id}`;
     if(res.rows.length == 0)

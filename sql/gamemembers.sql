@@ -2,7 +2,7 @@ CREATE TABLE public."GameMembers"
 (
     "Game" uuid,
     "User" uuid,
-    "Admin" bit,
+    "Admin" boolean,
     "JoinedAt" timestamp without time zone,
     CONSTRAINT "GAME_USER_UNIQUE" UNIQUE ("Game", "User")
 ,
