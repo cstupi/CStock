@@ -1,37 +1,26 @@
 {
   "name": "cstock",
-  "version": "1.0.0",
-  "description": "Stock Learning App",
-  "main": "app.js",
-  "private": true,
+  "version": "0.0.1",
+  "description": "Market sim api",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "start-dev": "source dev.env; node app.js",
-    "start-prod": "source prod.env; node app.js"
+    "test": "mocha -w models/**/test.js",
+    "start": "node index.js"
   },
-  "author": "",
+  "author": "CS",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^1.0.3",
-    "body-parser": "^1.18.2",
-    "chartist": "^0.10.1",
-    "cookie-parser": "^1.4.0",
-    "debug": "^2.6.9",
-    "ejs": "^2.5.7",
-    "express": "^4.16.2",
-    "express-mysql-session": "^1.2.3",
-    "helmet": "^3.9.0",
-    "moment": "^2.20.1",
-    "morgan": "^1.9.0",
-    "mysql": "^2.15.0",
-    "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
-    "purecss": "^0.6.2",
-    "serve-favicon": "^2.4.5",
-    "vue": "^2.5.13",
-    "vue-router": "^2.8.1"
-  },
-  "devDependencies": {
-    "webpack": "^2.7.0"
+    "axios": "^0.18.0",
+    "bcrypt": "^3.0.2",
+    "hapi": "^17.6.0",
+    "hapi-auth-jwt2": "^8.1.0",
+    "hapi-swagger": "^9.1.2",
+    "inert": "^5.1.1",
+    "joi": "^14.0.1",
+    "jsonwebtoken": "^8.3.0",
+    "mocha": "^5.2.0",
+    "pg": "^7.6.0",
+    "uuid": "^3.3.2",
+    "vision": "^5.4.2"
   }
 }
