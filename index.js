@@ -68,6 +68,7 @@ async function start() {
         server.route(require('./routes/GameMember'));
         server.route(require('./routes/Order'));
         server.route(require('./routes/Transaction'));
+        server.route(require('./routes/Quote'));
     //    server.route(require('./routes/Quote'));
         server.route({
             method: 'GET',
