@@ -12,7 +12,8 @@ if(config.env == 'dev'){
     server = Hapi.server({
         host: config.url,
         port: config.port,
-        debug: { request: ['error']}
+        debug: { request: ['error']},
+        routes: {cors: true}
     });
 } else {
     server = Hapi.server({
