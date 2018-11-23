@@ -20,6 +20,8 @@ module.exports = [
     config: {
         auth: { mode: 'required' },
         handler: async (req, res) => {
+            if(req.query && req.query.user)
+                return await Game.List(req.query.user)
             return await Game.List();
         }
     }
