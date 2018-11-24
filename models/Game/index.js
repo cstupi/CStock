@@ -16,8 +16,9 @@ async function Create(game){
     return game;
 }
 async function List(user){
+    console.log(`${SELECT} JOIN "GameMembers" g on g."Game" = "Game"."Id" WHERE g.User = $1`)
     if(user)
-        return (await db.query(`${SELECT} JOIN GameMembers g on g.Game = Game.Id WHERE g.User = $1`, [user])).rows;
+        return (await db.query(`${SELECT} JOIN "GameMembers" g on g."Game" = "Game"."Id" WHERE g."User" = $1`, [user])).rows;
     return (await db.query(SELECT)).rows;
 }
 async function Get(id){
@@ -47,8 +48,8 @@ class Game {
             StartingValue: this.StartingValue
         };
     }
-    static List(){
-        return List();
+    static List(user){
+        return List(user);
     }
     static Create(game){
         return Create(game);
