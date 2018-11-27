@@ -70,18 +70,7 @@ async function start() {
         server.route(require('./routes/Order'));
         server.route(require('./routes/Transaction'));
         server.route(require('./routes/Quote'));
-    //    server.route(require('./routes/Quote'));
-        server.route({
-            method: 'GET',
-            path: '/',
-            config:{
-                auth: { mode: 'required', strategy: 'jwt' }, 
-                handler: (req, h) => {
-                    console.log(req.auth.credentials);
-                    return 'Hello, world!';
-                }
-            }
-        });
+        
         console.log('Starting');
         await server.start();
     } 

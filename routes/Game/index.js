@@ -60,5 +60,21 @@ module.exports = [
             payload: gameValidation
         }
     }
+},
+{
+    method: 'GET',
+    path:'/api/game/{gameId}/portfolio',
+    config: {
+        auth: { mode: 'required' },
+        handler: async (req, res) => {
+            if(!req.params.gameId)
+                return res.response().code(400);
+            let user = req.auth.credentials.Id;
+            // We allow look up of other people's holdings
+            if(req.query && req.query.user)
+                user = req.query.user;
+            return await Asset.List(user, req.params.gameId);
+        }
+    }
 }
 ];

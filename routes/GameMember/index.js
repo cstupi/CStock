@@ -55,5 +55,15 @@ module.exports = [
                 payload: v
             }
         }
+    },
+    {
+        method: 'DELETE',
+        path: '/api/GameMember/{game}',
+        config: {
+            auth: { mode: 'required' },
+            handler: async (req, res) => {
+                return await GameMember.Delete(req.params.game, req.auth.credentials.Id)
+            }
+        }
     }
 ];

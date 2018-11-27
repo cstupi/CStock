@@ -40,7 +40,7 @@ module.exports = [
             let order = Order.Get(req.params.order);
             if(order.Owner != req.auth.credentials.Id)
                 return res.response().code(403);
-            return Order.UpdateStatus(order.Id, status);
+            return Order.UpdateStatus(order.Id, req.payload.status);
         }
     }
 },

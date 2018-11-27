@@ -18,15 +18,18 @@ function sanitizeSeries(arr){
 function sanitize(obj){
     let o = {};
     for(let key in obj){
-        o[key.substring(3)] = obj[key];
+        o[key.substring(3).trim().replace(/ /g, '_')] = obj[key];
     }
     return o;
 }
 async function Quote(identifier){
     try {
+        console.log(`${BASE}/query?function=GLOBAL_QUOTE&symbol=${identifier}&apikey=${TOKEN}`)
         const res = await axios.get(`${BASE}/query?function=GLOBAL_QUOTE&symbol=${identifier}&apikey=${TOKEN}`);
+        console.log(res)
         if(res.data)
             return sanitize(res.data['Global Quote']);
+        
         return [];
     } catch(err) {
         throw err;
